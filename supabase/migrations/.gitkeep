@@ -1,0 +1,3 @@
+# Database migrations live here. The schema (profiles, cycles, daily_logs,
+# articles, community_* , etc.) and Row-Level Security policies are introduced
+# from Phase 1 onward. Keep migrations reversible where possible.

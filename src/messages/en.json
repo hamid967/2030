@@ -1,0 +1,37 @@
+{
+  "Metadata": {
+    "title": "Warif | Understand your cycle",
+    "description": "Warif is a private, safe Arabic women's wellness app for tracking the menstrual cycle and daily health, with medically reviewed content and a supportive community."
+  },
+  "Common": {
+    "brand": "Warif",
+    "tagline": "Understand your cycle. Care for yourself. You are not alone.",
+    "languageName": "English",
+    "switchToOther": "العربية",
+    "getStarted": "Get started",
+    "learnMore": "Learn more",
+    "skipToContent": "Skip to content"
+  },
+  "Landing": {
+    "heroEyebrow": "Your calm space to care for yourself",
+    "heroTitle": "Understand your cycle, your way",
+    "heroSubtitle": "Warif is a calm space to understand your cycle and daily health, with real privacy and a safe Arabic community.",
+    "featuresTitle": "What does Warif offer?",
+    "feature1Title": "Fast daily check-in",
+    "feature1Body": "Log your cycle, symptoms, mood, energy and sleep in under thirty seconds.",
+    "feature2Title": "Simple insights",
+    "feature2Body": "Understand your personal patterns through a clear calendar and predictions shown as estimates, not certainties.",
+    "feature3Title": "Medically reviewed content",
+    "feature3Body": "Read trustworthy Arabic health articles with the reviewer's name, sources and last update date.",
+    "feature4Title": "A safe pseudonymous community",
+    "feature4Body": "Share your experience in a supportive, moderated women's community without revealing your real identity.",
+    "privacyTitle": "Your privacy is a core feature",
+    "privacyBody": "We separate your identity data from your health data, never sell your data, and never use it for targeted ads. Export and deletion are always available.",
+    "disclaimerTitle": "Important notice",
+    "disclaimerBody": "Warif is a tracking, education and support tool, not a diagnostic or treatment tool. All cycle and ovulation dates are fallible estimates and must not be used as contraception."
+  },
+  "Footer": {
+    "phase": "Phase 0 — Foundation",
+    "rights": "All rights reserved"
+  }
+}
