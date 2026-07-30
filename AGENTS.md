@@ -56,5 +56,17 @@ architecture + privacy ADRs.
   `src/hooks/use-checkins.ts` (pure helpers/tests in `src/lib/checkins`).
   Client stores use `useSyncExternalStore` for hydration safety — read
   `today`/dates only after the `hydrated` flag to avoid SSR mismatches.
-- PWA: `src/app/manifest.ts` + `public/icon*.svg`; `themeColor` is set via the
-  `viewport` export in `src/app/[locale]/layout.tsx`.
+- PWA/brand: `src/app/manifest.ts` uses PNG icons in `public/brand/`
+  (`app-icon-192/512`, `apple-touch-icon`); brand illustrations live in
+  `public/illustrations/` and are rendered with `next/image` (alt text comes
+  from i18n messages). `themeColor` is set via the `viewport` export in
+  `src/app/[locale]/layout.tsx`.
+- Phase 1 auth lives under the `(auth)` route group (`onboarding`,
+  `auth/sign-up`, `auth/login`, `auth/verify`, `auth/consents`,
+  `pending-activation`). It is a **client-side, localStorage-backed stand-in for
+  Supabase Auth** (`src/hooks/use-account.ts`; pure transition logic + tests in
+  `src/lib/account`). NOT real security — the single seam to swap to Supabase
+  Auth + RLS later. The pending screen includes a clearly-labelled **demo admin
+  simulator** (approve/reject) standing in for the Phase 2 admin console; the
+  14-day trial is intentionally NOT started here (the account model has no trial
+  fields).
