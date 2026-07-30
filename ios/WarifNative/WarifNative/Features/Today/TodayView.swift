@@ -5,6 +5,7 @@ struct TodayView: View {
 
     @State private var profile: CycleProfile?
     @State private var prediction: CyclePrediction?
+    @State private var dailyInsight: DailyInsight?
 
     private var theme: RegionTheme { environment.regionTheme.activeTheme }
 
@@ -16,6 +17,7 @@ struct TodayView: View {
                     if let profile {
                         ringSection(profile)
                         estimateSection
+                        dailyInsightSection
                         checkInCTA
                         trustedContentCard
                     } else {
@@ -40,6 +42,31 @@ struct TodayView: View {
             }
         }
         .task { await load() }
+    }
+
+    @ViewBuilder
+    private var dailyInsightSection: some View {
+        if let dailyInsight {
+            WarifCard {
+                VStack(alignment: .leading, spacing: 10) {
+                    Label(dailyInsight.titleAr, systemImage: icon(for: dailyInsight.tone))
+                        .font(.headline)
+                        .foregroundStyle(color(for: dailyInsight.tone))
+                    Text(dailyInsight.bodyAr)
+                        .foregroundStyle(.secondary)
+                    if let first = dailyInsight.actions.first {
+                        Divider()
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text(first.titleAr)
+                                .font(.subheadline.weight(.semibold))
+                            Text(first.bodyAr)
+                                .font(.footnote)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private var header: some View {
@@ -125,9 +152,66 @@ struct TodayView: View {
         let loaded = await environment.cycle.getProfile()
         profile = loaded
         if let loaded {
-            prediction = CycleEngine.predict(
+            let nextPrediction = CycleEngine.predict(
                 periodStarts: loaded.periodStarts, today: Date()
             )
+            prediction = nextPrediction
+            dailyInsight = await buildDailyInsight(profile: loaded, prediction: nextPrediction)
+        }
+    }
+
+    private func buildDailyInsight(
+        profile: CycleProfile,
+        prediction: CyclePrediction
+    ) async -> DailyInsight {
+        let today = Date()
+        let cycleDay = CycleEngine.cycleDay(
+            lastPeriodStart: profile.lastPeriodStart,
+            cycleLength: profile.cycleLength,
+            today: today
+        )
+        let phase = CycleEngine.phase(
+            cycleDay: cycleDay,
+            periodLength: profile.periodLength,
+            cycleLength: profile.cycleLength
+        )
+        let checkIns = await environment.checkIn.recent(days: 7, endingOn: today)
+        let healthSummaries = (try? await environment.health.dailySummaries(
+            metrics: [.heartRate, .restingHeartRate, .heartRateVariability, .sleep, .steps],
+            interval: DateInterval(
+                start: WarifCalendar.adding(-7, to: today),
+                end: today
+            ),
+            calendar: WarifCalendar.riyadh
+        )) ?? []
+
+        return DailyInsightEngine.generate(
+            DailyInsightInput(
+                cyclePhase: phase,
+                cycleDay: cycleDay,
+                prediction: prediction,
+                checkIns: checkIns,
+                healthSummaries: healthSummaries,
+                region: environment.regionTheme.preference?.region,
+                wellnessProfile: .starter
+            )
+        )
+    }
+
+    private func icon(for tone: InsightTone) -> String {
+        switch tone {
+        case .calm: "leaf"
+        case .encouraging: "sparkles"
+        case .caution: "exclamationmark.triangle"
+        case .privacy: "lock.shield"
+        }
+    }
+
+    private func color(for tone: InsightTone) -> Color {
+        switch tone {
+        case .calm, .privacy: WarifBrand.berryStrong
+        case .encouraging: WarifBrand.berry
+        case .caution: Color.orange
         }
     }
 }
