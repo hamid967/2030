@@ -50,12 +50,25 @@ final class AppEnvironment {
             checkIn: MockCheckInRepository(),
             content: MockContentRepository(),
             community: MockCommunityRepository(),
+            health: HealthKitClient(),
+            regionLocator: CoreLocationRegionLocator(),
+            secureStore: InMemorySecureStore(),
+            regionTheme: RegionThemeStore()
+        )
+    }
+
+    static func preview() -> AppEnvironment {
+        AppEnvironment(
+            auth: MockAuthRepository(),
+            member: MockMemberRepository(),
+            cycle: MockCycleRepository(),
+            checkIn: MockCheckInRepository(),
+            content: MockContentRepository(),
+            community: MockCommunityRepository(),
             health: MockHealthDataProvider(),
             regionLocator: MockRegionLocator(),
             secureStore: InMemorySecureStore(),
             regionTheme: RegionThemeStore()
         )
     }
-
-    static func preview() -> AppEnvironment { local() }
 }

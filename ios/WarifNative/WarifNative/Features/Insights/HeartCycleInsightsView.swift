@@ -9,7 +9,7 @@ struct HeartCycleInsightsView: View {
     @State private var summaries: [DailyHealthSummary] = []
     @State private var loaded = false
 
-    private let metrics: Set<HealthMetric> = [.restingHeartRate, .sleep]
+    private let metrics: Set<HealthMetric> = [.heartRate, .restingHeartRate, .heartRateVariability, .sleep]
 
     var body: some View {
         ScrollView {
@@ -25,12 +25,21 @@ struct HeartCycleInsightsView: View {
                     // Charts sit on a solid surface, never a textured backdrop.
                     WarifCard {
                         VStack(alignment: .leading, spacing: 8) {
-                            Text("نبض الراحة (آخر أيام)").font(.headline)
+                            Text("متوسط النبض ونبض الراحة").font(.headline)
                             Chart(summaries) { summary in
+                                if let heart = summary.averageHeartRate {
+                                    LineMark(
+                                        x: .value("اليوم", summary.day),
+                                        y: .value("متوسط النبض", heart),
+                                        series: .value("المؤشر", "متوسط النبض")
+                                    )
+                                    .foregroundStyle(WarifBrand.berry.opacity(0.55))
+                                }
                                 if let rhr = summary.restingHeartRate {
                                     LineMark(
                                         x: .value("اليوم", summary.day),
-                                        y: .value("نبض الراحة", rhr)
+                                        y: .value("نبض الراحة", rhr),
+                                        series: .value("المؤشر", "نبض الراحة")
                                     )
                                     .foregroundStyle(WarifBrand.berry)
                                 }
@@ -39,7 +48,7 @@ struct HeartCycleInsightsView: View {
                         }
                     }
                     WarifCard {
-                        Text("ظهر تزامن في تسجيلاتك — هذه علاقة وليست سبباً، ولا تُعتبر تشخيصاً. المصدر: تطبيق صحتي، تُحلل العينات على جهازك.")
+                        Text("تُستخدم بيانات القلب والنوم كسياق عام فقط. هذه علاقة وليست سبباً، ولا تُعتبر تشخيصاً أو مراقبة طوارئ. المصدر: تطبيق صحتي، وتُحلل العينات على جهازك.")
                             .font(.footnote).foregroundStyle(WarifBrand.berryStrong)
                     }
                 }

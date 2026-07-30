@@ -6,7 +6,7 @@ struct ConnectedHealthView: View {
     @State private var status: String?
 
     private let metrics: Set<HealthMetric> = [
-        .restingHeartRate, .heartRateVariability, .sleep, .steps, .activeEnergy,
+        .heartRate, .restingHeartRate, .heartRateVariability, .sleep, .steps, .activeEnergy,
     ]
 
     var body: some View {

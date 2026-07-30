@@ -7,7 +7,8 @@ wrapper — this is a native client.
 - Swift 6, SwiftUI, iOS 18+, `@Observable`, structured concurrency.
 - Arabic-first with full RTL; English parity.
 - 13 Saudi regional themes; region chosen at sign-up (location optional).
-- Optional, read-only HealthKit connection (on-device aggregation).
+- Optional, read-only HealthKit connection with on-device daily aggregation
+  for heart rate, resting heart rate, HRV, sleep, steps, and active energy.
 - Repositories are protocol-based with mock/local implementations; a
   Supabase-backed layer (Auth + RLS) is the next batch.
 
@@ -48,7 +49,7 @@ iPhone** — automated tests use `MockHealthDataProvider` only.
 - Coordinates are never stored/uploaded — only the region slug + how it was
   chosen. Location permission is always optional (manual picker is equal).
 - HealthKit is read-only and requested from a dedicated screen (not at sign-up);
-  raw samples stay on device.
+  raw samples stay on device and are reduced to daily summaries before UI use.
 - No secrets in the app; only the public Supabase URL + publishable key via a
   git-ignored xcconfig.
 
@@ -66,9 +67,7 @@ iPhone** — automated tests use `MockHealthDataProvider` only.
 ## Deferred (next batches)
 
 Supabase live repositories + Auth/RLS, admin activation + server-side 14-day
-trial, the live HealthKit `HKStatisticsCollectionQuery` aggregation (the
-`HealthAggregationActor` and the Swift Charts overlay UI already exist; wiring
-the real query on-device is the remaining piece), calendar day-details view,
-subscription, menstrual-flow HealthKit write (Phase 2), optional watchOS
-companion. Sign in with Apple nonce hashing, the region theme system, the
-period-edit sheet, and generic-copy notifications are implemented in this PR.
+trial, calendar day-details view, subscription, menstrual-flow HealthKit write
+(Phase 2), optional watchOS companion. Sign in with Apple nonce hashing, the
+region theme system, HealthKit daily aggregation, the period-edit sheet, and
+generic-copy notifications are implemented in this scaffold.

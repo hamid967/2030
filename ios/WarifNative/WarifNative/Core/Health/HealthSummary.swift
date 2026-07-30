@@ -10,9 +10,10 @@ enum HealthAuthorizationState: Sendable {
 struct DailyHealthSummary: Identifiable, Sendable {
     var id: Date { day }
     let day: Date
-    var restingHeartRate: Double?
-    var hrvSDNN: Double?
-    var steps: Int?
-    var activeEnergyKcal: Double?
-    var sleepHours: Double?
+    var averageHeartRate: Double? = nil
+    var restingHeartRate: Double? = nil
+    var hrvSDNN: Double? = nil
+    var steps: Int? = nil
+    var activeEnergyKcal: Double? = nil
+    var sleepHours: Double? = nil
 }
