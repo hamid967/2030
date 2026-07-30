@@ -3,6 +3,7 @@ import { Link } from "@/i18n/navigation";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { WarifLogo } from "@/components/warif-logo";
 import { BottomNav } from "@/components/app/bottom-nav";
+import { SensitiveDataToggle } from "@/components/app/sensitive-data-toggle";
 
 export default async function MemberLayout({
   children,
@@ -24,7 +25,10 @@ export default async function MemberLayout({
             {t("brand")}
           </span>
         </Link>
-        <LanguageSwitcher />
+        <div className="flex items-center gap-2">
+          <SensitiveDataToggle />
+          <LanguageSwitcher />
+        </div>
       </header>
 
       <main className="mx-auto w-full max-w-2xl flex-1 px-6 pb-8">

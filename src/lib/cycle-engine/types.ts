@@ -15,6 +15,12 @@ export interface CycleProfile {
   cycleLength: number;
   /** Typical period (bleeding) length in days. */
   periodLength: number;
+  /**
+   * History of observed period start dates (YYYY-MM-DD), ascending. Used by the
+   * prediction engine to compute confidence. Optional for backward
+   * compatibility — defaults to `[lastPeriodStart]` when absent.
+   */
+  periodStarts?: string[];
 }
 
 export interface DayRange {

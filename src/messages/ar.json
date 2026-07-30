@@ -52,7 +52,20 @@
     "resetButton": "مسح بياناتي",
     "estimateNote": "هذه تقديرات مبنية على المتوسطات التي أدخلتِها، وقد تتغير. كلما سجّلتِ أكثر تحسّن التوقع.",
     "notContraception": "لا تُستخدم نافذة التبويض وسيلةً لمنع الحمل، وهذه ليست نصيحة طبية.",
-    "privacyNote": "بياناتك محفوظة على جهازك فقط ولا تُرسل إلى أي خادم."
+    "privacyNote": "بياناتك محفوظة على جهازك فقط ولا تُرسل إلى أي خادم.",
+    "stateLabel": "مرحلتك اليوم: {state}",
+    "stateStillness": "السكون",
+    "stateRenewal": "التجدد",
+    "stateBalance": "التوازن",
+    "stateContainment": "الاحتواء",
+    "confidence_insufficient": "بيانات غير كافية",
+    "confidence_low": "ثقة منخفضة",
+    "confidence_medium": "ثقة متوسطة",
+    "confidence_high": "ثقة عالية",
+    "cyclesUsed": "{count} دورات مسجّلة",
+    "logDay": "سجّلي يومك",
+    "periodStarted": "بدأت الدورة",
+    "viewCalendar": "عرض التقويم"
   },
   "CycleSetup": {
     "title": "إعداد دورتك",
@@ -84,7 +97,9 @@
     "label": "التنقل الرئيسي",
     "today": "اليوم",
     "calendar": "التقويم",
-    "checkIn": "تسجيل"
+    "checkIn": "تسجيل",
+    "learn": "دليل وريف",
+    "community": "المجتمع"
   },
   "CheckIn": {
     "title": "تسجيل اليوم",
@@ -196,5 +211,92 @@
     "demoReject": "محاكاة الرفض",
     "demoReasonPlaceholder": "سبب الرفض (اختياري)",
     "demoDefaultReason": "يلزم استكمال بيانات إضافية."
+  },
+  "Shell": {
+    "hideSensitive": "إخفاء المعلومات الحساسة",
+    "showSensitive": "إظهار المعلومات"
+  },
+  "Learn": {
+    "title": "دليل وريف",
+    "subtitle": "محتوى تثقيفي عام — تجريبي بانتظار المراجعة الطبية.",
+    "searchPlaceholder": "ابحثي في الدليل",
+    "allCategories": "الكل",
+    "cat_cycle": "دورتك",
+    "cat_pain": "الألم والأعراض",
+    "cat_hormones": "الهرمونات",
+    "cat_fertility": "الخصوبة",
+    "cat_mental": "الصحة النفسية",
+    "cat_nutrition": "التغذية والحركة",
+    "cat_doctor": "متى أراجع الطبيبة؟",
+    "noResults": "لا توجد نتائج مطابقة.",
+    "experimentalShort": "تجريبي",
+    "readingMinutes": "{minutes} دقائق قراءة",
+    "backToLibrary": "رجوع إلى الدليل",
+    "experimentalNote": "محتوى تجريبي — بانتظار المراجعة الطبية، ولا يُعتمد عليه كمصدر طبي.",
+    "reviewLabel": "المراجعة الطبية",
+    "notReviewed": "لم تُراجع بعد",
+    "sourcesLabel": "المصادر",
+    "noSources": "لا توجد مصادر بعد"
+  },
+  "Community": {
+    "title": "مجتمع وريف",
+    "subtitle": "مساحة نسائية داعمة باسم مستعار.",
+    "heroAlt": "رسمة لمجتمع نسائي سعودي داعم.",
+    "disclaimer": "تجارب العضوات لا تُعتبر تشخيصاً أو وصفة علاجية.",
+    "backToSpaces": "رجوع إلى المساحات",
+    "empty": "لا توجد منشورات بعد في هذه المساحة.",
+    "emptyAlt": "رسمة لمجتمع داعم."
+  },
+  "Insights": {
+    "title": "الرؤى",
+    "subtitle": "أنماط عامة من تسجيلاتك، وليست تشخيصاً.",
+    "dataSourceNote": "كل الأرقام محسوبة من تسجيلاتك على هذا الجهاز خلال آخر ٣٠ يوماً والدورات المسجّلة.",
+    "cycleSection": "الدورة",
+    "medianCycle": "وسيط طول الدورة",
+    "cyclesLogged": "دورات مسجّلة",
+    "confidenceNote": "مستوى الثقة في التوقع: {level}",
+    "confidence_insufficient": "غير كافٍ",
+    "confidence_low": "منخفض",
+    "confidence_medium": "متوسط",
+    "confidence_high": "عالٍ",
+    "days": "{n} يوم",
+    "wellbeingSection": "المزاج والطاقة والنوم",
+    "noCheckins": "لا توجد تسجيلات كافية بعد.",
+    "avgMood": "متوسط المزاج",
+    "avgEnergy": "متوسط الطاقة",
+    "avgSleep": "متوسط النوم",
+    "loggingSection": "التسجيل",
+    "loggedDays": "أيام مسجّلة",
+    "ofDays": "{n} من ٣٠",
+    "bleedingDays": "أيام نزف",
+    "notDiagnosis": "هذه ملاحظات من تسجيلاتك وليست تشخيصاً."
+  },
+  "Reports": {
+    "title": "التقارير",
+    "subtitle": "ملخص صحي يمكنك مشاركته مع طبيبتك.",
+    "comingSoon": "تقرير PDF قيد التحضير خلف إعداد مؤقت.",
+    "point1": "يُنشأ فقط بطلب صريح منك.",
+    "point2": "تختارين الأقسام التي تظهر فيه.",
+    "point3": "رابط تنزيل قصير العمر، ولا يستطيع فريق الإدارة تنزيله."
+  },
+  "PrivacyCenter": {
+    "title": "الخصوصية",
+    "subtitle": "تحكّمي في بياناتك وطريقة عرضها.",
+    "intro": "بياناتك الصحية محفوظة على هذا الجهاز فقط ولا تُرسل إلى أي خادم.",
+    "personasTitle": "إظهار الشخصيات البصرية",
+    "personasBody": "عرض حالة هادئة لمرحلتك، أو إيقافها لواجهة رقمية أبسط.",
+    "sensitiveTitle": "إخفاء المعلومات الحساسة",
+    "sensitiveBody": "استخدمي زر العين في الأعلى لإخفاء الأرقام الحساسة بسرعة.",
+    "dataTitle": "بياناتك",
+    "keepOnDevice": "يمكنك الاحتفاظ ببياناتك على هذا الجهاز فقط.",
+    "exportData": "تصدير بياناتي",
+    "clearData": "حذف بياناتي المحلية",
+    "cleared": "تم حذف بياناتك من هذا الجهاز."
+  },
+  "Subscription": {
+    "title": "الاشتراك",
+    "subtitle": "خطتك وتجربتك المجانية.",
+    "localModeNote": "أنتِ الآن في الوضع المحلي على هذا الجهاز.",
+    "trialNote": "لا تبدأ تجربة ١٤ يوماً إلا بعد تفعيل الحساب من الإدارة في مرحلة لاحقة."
   }
 }

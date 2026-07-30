@@ -7,14 +7,16 @@ import { Card } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
 
+import { getLocalDateISO } from "@/lib/datetime";
+
 function todayIso(): string {
-  return new Date().toISOString().slice(0, 10);
+  return getLocalDateISO();
 }
 
 const metrics = [
   { key: "mood", colorVar: "var(--warif-primary)" },
-  { key: "energy", colorVar: "var(--warif-sage)" },
-  { key: "sleep", colorVar: "var(--warif-lavender)" },
+  { key: "energy", colorVar: "var(--phase-follicular)" },
+  { key: "sleep", colorVar: "var(--phase-menstrual)" },
 ] as const;
 
 export function WeekSummary() {

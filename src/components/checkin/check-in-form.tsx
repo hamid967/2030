@@ -8,8 +8,10 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
+import { getLocalDateISO } from "@/lib/datetime";
+
 function todayIso(): string {
-  return new Date().toISOString().slice(0, 10);
+  return getLocalDateISO();
 }
 
 function RatingScale({
@@ -100,13 +102,13 @@ export function CheckInForm() {
         label={t("energyLabel")}
         value={energy}
         onChange={setEnergy}
-        color="var(--warif-sage)"
+        color="var(--phase-follicular)"
       />
       <RatingScale
         label={t("sleepLabel")}
         value={sleep}
         onChange={setSleep}
-        color="var(--warif-lavender)"
+        color="var(--phase-menstrual)"
       />
 
       <div>

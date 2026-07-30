@@ -9,22 +9,35 @@ import {
   Info,
   Pencil,
   Trash2,
+  Droplet,
+  CalendarDays,
 } from "lucide-react";
 import {
   computeCycleStatus,
   type CycleProfile,
   type CycleStatus,
 } from "@/lib/cycle-engine";
+import { predictCycle } from "@/lib/cycle-engine/predict";
+import {
+  phaseToVisualState,
+  type VisualState,
+} from "@/lib/cycle-engine/visual-states";
+import { getLocalDateISO } from "@/lib/datetime";
 import { useCycleProfile } from "@/hooks/use-cycle-profile";
-import { Button } from "@/components/ui/button";
+import { useVisualPersonas } from "@/hooks/use-visual-personas";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Link } from "@/i18n/navigation";
 import { CyclePhaseRing } from "./cycle-phase-ring";
 import { DailyStoryCard } from "./daily-story-card";
 import { CycleSetupForm } from "./cycle-setup-form";
 
-function todayIso(): string {
-  return new Date().toISOString().slice(0, 10);
-}
+const stateKey: Record<VisualState, string> = {
+  stillness: "stateStillness",
+  renewal: "stateRenewal",
+  balance: "stateBalance",
+  containment: "stateContainment",
+};
 
 function useDateFormatter() {
   const locale = useLocale();
@@ -40,7 +53,9 @@ function useDateFormatter() {
 
 export function TodayExperience() {
   const t = useTranslations("Today");
-  const { profile, hydrated, saveProfile, clearProfile } = useCycleProfile();
+  const { profile, hydrated, saveProfile, logPeriodStart, clearProfile } =
+    useCycleProfile();
+  const { enabled: showPersonas } = useVisualPersonas();
   const [editing, setEditing] = useState(false);
   const formatDate = useDateFormatter();
 
@@ -50,8 +65,8 @@ export function TodayExperience() {
     );
   }
 
-  // Computed on the client only (after `hydrated`), so no SSR mismatch.
-  const now = todayIso();
+  // Riyadh-local "today" (never the UTC date). Computed after hydration.
+  const now = getLocalDateISO();
 
   const handleSave = (next: CycleProfile) => {
     saveProfile(next);
@@ -74,20 +89,55 @@ export function TodayExperience() {
     return <CycleSetupForm defaultValues={profile} onSubmit={handleSave} />;
   }
 
+  const prediction = predictCycle({
+    periodStarts: profile.periodStarts ?? [profile.lastPeriodStart],
+    today: now,
+    generatedAt: new Date().toISOString(),
+  });
+  const visualState = phaseToVisualState[status.phase];
+  const rangeEarliest =
+    prediction.earliestDate ?? status.nextPeriodRange.earliest;
+  const rangeLatest = prediction.latestDate ?? status.nextPeriodRange.latest;
+
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col items-center gap-2 text-center">
-        <CyclePhaseRing
-          cycleDay={status.cycleDay}
-          cycleLength={status.cycleLength}
-          phase={status.phase}
-        />
+        {showPersonas && (
+          <span className="rounded-full bg-primary/10 px-4 py-1 text-sm font-medium text-primary-strong">
+            {t("stateLabel", { state: t(stateKey[visualState]) })}
+          </span>
+        )}
+        <div className="sensitive">
+          <CyclePhaseRing
+            cycleDay={status.cycleDay}
+            cycleLength={status.cycleLength}
+            phase={status.phase}
+          />
+        </div>
         <p className="text-lg font-medium text-text">
           {t("dayLabel", { day: status.cycleDay })}
         </p>
-        <p className="text-sm text-muted">
-          {t("cycleLengthLabel", { length: status.cycleLength })}
-        </p>
+        <span className="rounded-full bg-surface px-3 py-1 text-xs font-medium text-muted ring-1 ring-border">
+          {t(`confidence_${prediction.confidence}`)} ·{" "}
+          {t("cyclesUsed", { count: prediction.cyclesUsed })}
+        </span>
+      </div>
+
+      <div className="flex flex-wrap justify-center gap-3">
+        <Link href="/check-in" className={buttonVariants({ size: "md" })}>
+          {t("logDay")}
+        </Link>
+        <Button variant="outline" onClick={() => logPeriodStart(now)}>
+          <Droplet className="size-4" aria-hidden />
+          {t("periodStarted")}
+        </Button>
+        <Link
+          href="/calendar"
+          className={buttonVariants({ size: "md", variant: "ghost" })}
+        >
+          <CalendarDays className="size-4" aria-hidden />
+          {t("viewCalendar")}
+        </Link>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
@@ -97,10 +147,10 @@ export function TodayExperience() {
           </span>
           <div>
             <p className="font-semibold text-text">{t("nextPeriodLabel")}</p>
-            <p className="text-muted">
+            <p className="text-muted sensitive">
               {t("nextPeriodRange", {
-                earliest: formatDate(status.nextPeriodRange.earliest),
-                latest: formatDate(status.nextPeriodRange.latest),
+                earliest: formatDate(rangeEarliest),
+                latest: formatDate(rangeLatest),
               })}
             </p>
             <p className="mt-1 text-sm text-muted">
@@ -110,12 +160,15 @@ export function TodayExperience() {
         </Card>
 
         <Card className="flex items-start gap-3">
-          <span className="mt-0.5 text-lavender">
+          <span
+            className="mt-0.5"
+            style={{ color: "var(--phase-ovulation-estimate)" }}
+          >
             <Egg className="size-5" aria-hidden />
           </span>
           <div>
             <p className="font-semibold text-text">{t("ovulationLabel")}</p>
-            <p className="text-muted">
+            <p className="text-muted sensitive">
               {t("fertileRange", {
                 start: status.fertileWindowEstimate.startDay,
                 end: status.fertileWindowEstimate.endDay,
@@ -139,8 +192,12 @@ export function TodayExperience() {
         </div>
       </Card>
 
-      <Card className="flex items-center gap-2 bg-sage/10">
-        <ShieldCheck className="size-5 shrink-0 text-sage" aria-hidden />
+      <Card className="flex items-center gap-2 bg-renewal/10">
+        <ShieldCheck
+          className="size-5 shrink-0"
+          style={{ color: "var(--phase-follicular)" }}
+          aria-hidden
+        />
         <p className="text-sm text-muted">{t("privacyNote")}</p>
       </Card>
 

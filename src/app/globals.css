@@ -1,24 +1,39 @@
 @import "tailwindcss";
 
 /*
- * Warif design tokens.
- * Source of truth for the brand identity described in the product blueprint
- * (section 4). Colors, radii, typography and motion are exposed to Tailwind
- * through the @theme block so components can use `bg-primary`, `text-muted`,
- * `rounded-card`, etc. without hardcoded hex values.
+ * Warif design tokens (Saudi upgrade).
+ * Base brand colors + semantic tokens. Components must use these tokens
+ * (via Tailwind utilities or the CSS variables) — never hardcoded hex values.
  */
 :root {
-  --warif-primary: #8f5c78;
+  --warif-primary: #895b75;
   --warif-primary-strong: #6f405b;
-  --warif-rose: #c98c9e;
-  --warif-ivory: #fff9f7;
+  --warif-rose: #c98d9e;
+  --warif-ivory: #fff9f6;
   --warif-surface: #ffffff;
-  --warif-sage: #8faf9b;
-  --warif-lavender: #a99ac6;
   --warif-text: #30272d;
   --warif-muted: #746a70;
   --warif-border: #eadde2;
-  --warif-danger: #c85c64;
+  --warif-danger: #b76e79;
+
+  /* Cycle "state" accent colors (calm, non-diagnostic). */
+  --warif-stillness: #aaa0c8;
+  --warif-renewal: #91ad9a;
+  --warif-balance: #e7a27e;
+  --warif-containment: #b76e79;
+
+  /* Semantic phase tokens — used for phase accents across the app. */
+  --phase-menstrual: var(--warif-stillness);
+  --phase-follicular: var(--warif-renewal);
+  --phase-ovulation-estimate: var(--warif-balance);
+  --phase-luteal: var(--warif-containment);
+
+  /* Semantic surface/text/border tokens. */
+  --surface-soft: var(--warif-ivory);
+  --surface-elevated: var(--warif-surface);
+  --text-primary: var(--warif-text);
+  --text-muted: var(--warif-muted);
+  --border-soft: var(--warif-border);
 }
 
 @theme inline {
@@ -27,12 +42,19 @@
   --color-rose: var(--warif-rose);
   --color-ivory: var(--warif-ivory);
   --color-surface: var(--warif-surface);
-  --color-sage: var(--warif-sage);
-  --color-lavender: var(--warif-lavender);
   --color-text: var(--warif-text);
   --color-muted: var(--warif-muted);
   --color-border: var(--warif-border);
   --color-danger: var(--warif-danger);
+
+  /* Keep the sage/lavender aliases used by existing components. */
+  --color-sage: var(--warif-renewal);
+  --color-lavender: var(--warif-stillness);
+
+  --color-stillness: var(--warif-stillness);
+  --color-renewal: var(--warif-renewal);
+  --color-balance: var(--warif-balance);
+  --color-containment: var(--warif-containment);
 
   --color-background: var(--warif-ivory);
   --color-foreground: var(--warif-text);
@@ -44,10 +66,17 @@
 }
 
 body {
-  background: var(--warif-ivory);
-  color: var(--warif-text);
+  background: var(--surface-soft);
+  color: var(--text-primary);
   font-family: var(--font-sans);
   min-height: 100dvh;
+}
+
+/* Quickly hide sensitive values (e.g. on a shared screen). */
+[data-sensitive-hidden="true"] .sensitive {
+  filter: blur(9px);
+  user-select: none;
+  pointer-events: none;
 }
 
 /* Respect users who prefer reduced motion (blueprint section 4). */
