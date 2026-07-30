@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
@@ -21,6 +21,10 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
+export const viewport: Viewport = {
+  themeColor: "#8F5C78",
+};
+
 export async function generateMetadata({
   params,
 }: {
@@ -31,6 +35,13 @@ export async function generateMetadata({
   return {
     title: t("title"),
     description: t("description"),
+    manifest: "/manifest.webmanifest",
+    icons: { icon: "/icon.svg" },
+    appleWebApp: {
+      capable: true,
+      title: "Warif",
+      statusBarStyle: "default",
+    },
   };
 }
 
