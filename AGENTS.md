@@ -69,7 +69,7 @@ architecture + privacy ADRs.
   `periodStarts`. The cycle profile now keeps a `periodStarts[]` history
   (append via `logPeriodStart`, the "بدأت الدورة" action).
 - Design tokens are semantic: use `--phase-menstrual/follicular/
-  ovulation-estimate/luteal`, `--surface-*`, `--text-*`, `--border-soft` (and
+ovulation-estimate/luteal`, `--surface-*`, `--text-*`, `--border-soft` (and
   the `stillness/renewal/balance/containment` Tailwind aliases). Do not hardcode
   hex. Visual "states" live in `src/lib/cycle-engine/visual-states.ts` and can be
   turned off via the "visual personas" setting.
@@ -78,6 +78,12 @@ architecture + privacy ADRs.
   Batch 2 (see `docs/batch-2-plan.md`). Learn/Community are prototypes backed by
   typed fixtures in `src/lib/content` and `src/lib/community` (seed content is
   labelled experimental — never present it as approved medical content).
+- Native iOS app: `ios/WarifNative/` is a separate **native SwiftUI** app
+  (Swift 6, iOS 18, XcodeGen — the `.xcodeproj` is generated, not committed) and
+  is independent of the web tooling (it's excluded from Prettier; ESLint/tsc/
+  Next don't touch it). It must be built/tested on macOS + Xcode (see
+  `ios/WarifNative/README.md`); HealthKit needs a physical iPhone. Do not run web
+  `lint/test/build` expecting to cover it.
 - CI: `.eas/workflows/ci.yml` is an EAS Workflow (custom job) that runs
   `lint`/`typecheck`/`test`/`build` on push to `main`, PRs, or manual runs.
   When running it from the EAS dashboard, pick a **git ref that contains the

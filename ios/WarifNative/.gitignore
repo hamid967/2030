@@ -1,0 +1,12 @@
+# Real secrets (public values only, but kept out of Git per project policy).
+Configuration/Secrets.xcconfig
+
+# Generated Xcode project (Continuous Native Generation via XcodeGen).
+*.xcodeproj/
+*.xcworkspace/
+
+# Xcode / SPM
+.build/
+DerivedData/
+*.xcuserstate
+xcuserdata/
