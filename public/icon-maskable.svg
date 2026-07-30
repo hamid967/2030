@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Warif">
-  <rect width="512" height="512" fill="#8F5C78"/>
-  <g transform="translate(96,96) scale(6.67)">
-    <circle cx="24" cy="24" r="20" fill="none" stroke="#F4D9E1" stroke-width="1.5" stroke-dasharray="4 5"/>
-    <path d="M24 6c7 6 11 12 11 19a11 11 0 1 1-22 0c0-7 4-13 11-19Z" fill="#FFF9F7"/>
-    <path d="M19 22c0 4 1.5 6.5 4 6.5s4-2.5 4-6.5" fill="none" stroke="#8F5C78" stroke-width="2" stroke-linecap="round"/>
-    <circle cx="28.5" cy="20.5" r="1.6" fill="#8F5C78"/>
-  </g>
-</svg>

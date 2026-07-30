@@ -1,5 +1,12 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { HeartPulse, CalendarRange, BookOpenCheck, Users } from "lucide-react";
+import Image from "next/image";
+import {
+  HeartPulse,
+  CalendarDays,
+  BookOpenText,
+  UsersRound,
+  ShieldCheck,
+} from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { LanguageSwitcher } from "@/components/language-switcher";
@@ -16,10 +23,10 @@ export default async function LandingPage({
   const t = await getTranslations();
 
   const features = [
-    { icon: CalendarRange, key: "feature1" as const },
+    { icon: CalendarDays, key: "feature1" as const },
     { icon: HeartPulse, key: "feature2" as const },
-    { icon: BookOpenCheck, key: "feature3" as const },
-    { icon: Users, key: "feature4" as const },
+    { icon: BookOpenText, key: "feature3" as const },
+    { icon: UsersRound, key: "feature4" as const },
   ];
 
   return (
@@ -42,30 +49,42 @@ export default async function LandingPage({
       </header>
 
       <main id="main" className="mx-auto w-full max-w-5xl flex-1 px-6">
-        <section className="flex flex-col items-center gap-6 py-14 text-center sm:py-20">
-          <p className="rounded-full bg-lavender/15 px-4 py-1 text-sm font-medium text-primary-strong">
-            {t("Landing.heroEyebrow")}
-          </p>
-          <h1 className="max-w-2xl text-4xl font-bold leading-tight text-text sm:text-5xl">
-            {t("Landing.heroTitle")}
-          </h1>
-          <p className="max-w-xl text-lg text-muted">
-            {t("Landing.heroSubtitle")}
-          </p>
-          <p className="text-base font-medium text-primary">
-            {t("Common.tagline")}
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
-            <Link href="/today" className={buttonVariants({ size: "lg" })}>
-              {t("Common.getStarted")}
-            </Link>
-            <Link
-              href="/today"
-              className={buttonVariants({ size: "lg", variant: "outline" })}
-            >
-              {t("Common.learnMore")}
-            </Link>
+        <section className="grid items-center gap-8 py-12 sm:py-16 md:grid-cols-2">
+          <div className="flex flex-col items-start gap-5 text-start">
+            <p className="rounded-full bg-lavender/15 px-4 py-1 text-sm font-medium text-primary-strong">
+              {t("Landing.heroEyebrow")}
+            </p>
+            <h1 className="text-4xl font-bold leading-tight text-text sm:text-5xl">
+              {t("Landing.heroTitle")}
+            </h1>
+            <p className="text-lg text-muted">{t("Landing.heroSubtitle")}</p>
+            <p className="text-base font-medium text-primary">
+              {t("Common.tagline")}
+            </p>
+            <div className="flex flex-wrap gap-3 pt-2">
+              <Link
+                href="/onboarding"
+                className={buttonVariants({ size: "lg" })}
+              >
+                {t("Common.getStarted")}
+              </Link>
+              <Link
+                href="/today"
+                className={buttonVariants({ size: "lg", variant: "outline" })}
+              >
+                {t("Common.learnMore")}
+              </Link>
+            </div>
           </div>
+          <Image
+            src="/illustrations/hero-community-16x9.png"
+            alt={t("Landing.heroImageAlt")}
+            width={1672}
+            height={941}
+            priority
+            sizes="(max-width: 768px) 100vw, 480px"
+            className="w-full rounded-card"
+          />
         </section>
 
         <section className="py-8">
@@ -76,7 +95,7 @@ export default async function LandingPage({
             {features.map(({ icon: Icon, key }) => (
               <Card key={key} className="flex flex-col gap-3">
                 <span className="flex size-11 items-center justify-center rounded-full bg-primary/10 text-primary">
-                  <Icon className="size-5" aria-hidden />
+                  <Icon className="size-5" strokeWidth={1.75} aria-hidden />
                 </span>
                 <h3 className="text-lg font-semibold text-text">
                   {t(`Landing.${key}Title`)}
@@ -88,11 +107,28 @@ export default async function LandingPage({
         </section>
 
         <section className="py-8">
-          <Card className="bg-sage/10">
-            <h2 className="mb-2 text-xl font-bold text-primary-strong">
-              {t("Landing.privacyTitle")}
-            </h2>
-            <p className="text-muted">{t("Landing.privacyBody")}</p>
+          <Card className="grid items-center gap-6 bg-sage/10 md:grid-cols-2">
+            <div>
+              <div className="mb-2 flex items-center gap-2 text-primary-strong">
+                <ShieldCheck
+                  className="size-6"
+                  strokeWidth={1.75}
+                  aria-hidden
+                />
+                <h2 className="text-xl font-bold">
+                  {t("Landing.privacyTitle")}
+                </h2>
+              </div>
+              <p className="text-muted">{t("Landing.privacyBody")}</p>
+            </div>
+            <Image
+              src="/illustrations/onboarding-privacy-4x5.png"
+              alt={t("Landing.privacyImageAlt")}
+              width={1122}
+              height={1402}
+              sizes="(max-width: 768px) 100vw, 360px"
+              className="mx-auto w-full max-w-xs rounded-card"
+            />
           </Card>
         </section>
 

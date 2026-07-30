@@ -28,10 +28,12 @@
     "privacyTitle": "Your privacy is a core feature",
     "privacyBody": "We separate your identity data from your health data, never sell your data, and never use it for targeted ads. Export and deletion are always available.",
     "disclaimerTitle": "Important notice",
-    "disclaimerBody": "Warif is a tracking, education and support tool, not a diagnostic or treatment tool. All cycle and ovulation dates are fallible estimates and must not be used as contraception."
+    "disclaimerBody": "Warif is a tracking, education and support tool, not a diagnostic or treatment tool. All cycle and ovulation dates are fallible estimates and must not be used as contraception.",
+    "heroImageAlt": "Illustration of three Arab women sitting in a calm space, one holding a phone showing the Warif app.",
+    "privacyImageAlt": "Illustration of a calm woman using her phone, surrounded by soft botanical leaves."
   },
   "Footer": {
-    "phase": "Phase 0 — Foundation",
+    "phase": "Phase 1 — Identity & activation",
     "rights": "All rights reserved"
   },
   "Today": {
@@ -97,7 +99,8 @@
     "flowHeavy": "Heavy",
     "save": "Save day",
     "saved": "Saved",
-    "privacyNote": "Your check-ins are stored only on your device and never sent to any server."
+    "privacyNote": "Your check-ins are stored only on your device and never sent to any server.",
+    "imageAlt": "Illustration of a woman relaxing and logging her day in the Warif app."
   },
   "WeekSummary": {
     "title": "Last 7 days",
@@ -116,5 +119,82 @@
     "prevMonth": "Previous month",
     "nextMonth": "Next month",
     "estimateNote": "Upcoming days are estimates that may change and are not a contraception method."
+  },
+  "Onboarding": {
+    "imageAlt": "Illustration of a calm woman using her phone, surrounded by soft botanical leaves.",
+    "step1Title": "Gentle daily tracking",
+    "step1Body": "Log your cycle, symptoms and mood in seconds, and understand your patterns calmly.",
+    "step2Title": "Privacy first",
+    "step2Body": "We separate your health data from your identity, never sell your data, and export/deletion are always available.",
+    "step3Title": "A safe pseudonymous community",
+    "step3Body": "Share your experience in a supportive, moderated women's space without revealing your identity.",
+    "next": "Next",
+    "back": "Back",
+    "getStarted": "Create your account",
+    "haveAccount": "I have an account"
+  },
+  "Auth": {
+    "signUpTitle": "Create an account",
+    "signUpSubtitle": "A first step toward understanding your cycle, privately.",
+    "nameLabel": "Name or nickname",
+    "emailLabel": "Email",
+    "passwordLabel": "Password",
+    "signUpSubmit": "Create account",
+    "errorName": "Enter a name of at least 2 characters",
+    "errorEmail": "Enter a valid email address",
+    "errorPassword": "Password must be at least 8 characters",
+    "haveAccount": "Already have an account?",
+    "loginLink": "Log in",
+    "loginTitle": "Log in",
+    "loginSubtitle": "Welcome back to Warif.",
+    "loginSubmit": "Log in",
+    "errorNoAccount": "No account with this email on this device.",
+    "noAccount": "Don't have an account?",
+    "signUpLink": "Create one",
+    "verifyTitle": "Verify your email",
+    "verifySubtitle": "We sent a verification code to {email}.",
+    "verifyDemoHint": "Demo only: your code is {code}",
+    "verifyCodeLabel": "Verification code",
+    "errorCode": "Incorrect code, please try again.",
+    "verifySubmit": "Confirm email",
+    "noSession": "No active session. Start by creating an account."
+  },
+  "Consents": {
+    "title": "Consents",
+    "subtitle": "We ask for each consent separately. All are required to continue.",
+    "termsTitle": "Terms of Use",
+    "termsBody": "I agree to the Warif terms of use.",
+    "privacyTitle": "Privacy Policy",
+    "privacyBody": "I agree to the privacy policy and how my data is handled.",
+    "healthTitle": "Health data processing",
+    "healthBody": "I explicitly consent to processing my cycle and symptom data as sensitive health data.",
+    "communityTitle": "Community participation",
+    "communityBody": "I agree to the community rules and to participate pseudonymously.",
+    "submit": "Submit activation request",
+    "allRequired": "You must agree to all items to continue.",
+    "noSession": "No active session. Start by creating an account."
+  },
+  "Pending": {
+    "imageAlt": "Illustration of a calm woman waiting peacefully.",
+    "title": "Your request is under review",
+    "body": "We received your activation request; the admin team will review it soon.",
+    "statusPending": "Awaiting admin approval",
+    "requestNumber": "Request number",
+    "submittedAt": "Submitted on",
+    "support": "Your health data is not visible to the admin team.",
+    "approvedTitle": "Your account is activated",
+    "approvedBody": "Welcome to Warif. You can now enter the app.",
+    "enterApp": "Get started",
+    "rejectedTitle": "Request not approved",
+    "rejectedBody": "You can review the reason and resubmit your request.",
+    "reasonLabel": "Reason",
+    "resubmit": "Resubmit request",
+    "noSession": "No active session.",
+    "goSignUp": "Create account",
+    "demoTitle": "Admin decision simulator (demo — replaced by the Phase 2 admin console)",
+    "demoApprove": "Simulate approval",
+    "demoReject": "Simulate rejection",
+    "demoReasonPlaceholder": "Rejection reason (optional)",
+    "demoDefaultReason": "Additional information is required."
   }
 }
