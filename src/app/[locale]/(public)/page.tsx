@@ -1,9 +1,10 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { HeartPulse, CalendarRange, BookOpenCheck, Users } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { WarifLogo } from "@/components/warif-logo";
+import { Link } from "@/i18n/navigation";
 
 export default async function LandingPage({
   params,
@@ -55,10 +56,15 @@ export default async function LandingPage({
             {t("Common.tagline")}
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
-            <Button size="lg">{t("Common.getStarted")}</Button>
-            <Button size="lg" variant="outline">
+            <Link href="/today" className={buttonVariants({ size: "lg" })}>
+              {t("Common.getStarted")}
+            </Link>
+            <Link
+              href="/today"
+              className={buttonVariants({ size: "lg", variant: "outline" })}
+            >
               {t("Common.learnMore")}
-            </Button>
+            </Link>
           </div>
         </section>
 
