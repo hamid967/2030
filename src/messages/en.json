@@ -52,7 +52,20 @@
     "resetButton": "Clear my data",
     "estimateNote": "These are estimates based on the averages you entered and may change. The more you log, the better the prediction.",
     "notContraception": "The fertile window is not a contraception method, and this is not medical advice.",
-    "privacyNote": "Your data is stored only on your device and is never sent to any server."
+    "privacyNote": "Your data is stored only on your device and is never sent to any server.",
+    "stateLabel": "Your state today: {state}",
+    "stateStillness": "Stillness",
+    "stateRenewal": "Renewal",
+    "stateBalance": "Balance",
+    "stateContainment": "Containment",
+    "confidence_insufficient": "Insufficient data",
+    "confidence_low": "Low confidence",
+    "confidence_medium": "Medium confidence",
+    "confidence_high": "High confidence",
+    "cyclesUsed": "{count} cycles logged",
+    "logDay": "Log your day",
+    "periodStarted": "Period started",
+    "viewCalendar": "View calendar"
   },
   "CycleSetup": {
     "title": "Set up your cycle",
@@ -84,7 +97,9 @@
     "label": "Main navigation",
     "today": "Today",
     "calendar": "Calendar",
-    "checkIn": "Check-in"
+    "checkIn": "Check-in",
+    "learn": "Learn",
+    "community": "Community"
   },
   "CheckIn": {
     "title": "Daily check-in",
@@ -196,5 +211,92 @@
     "demoReject": "Simulate rejection",
     "demoReasonPlaceholder": "Rejection reason (optional)",
     "demoDefaultReason": "Additional information is required."
+  },
+  "Shell": {
+    "hideSensitive": "Hide sensitive info",
+    "showSensitive": "Show info"
+  },
+  "Learn": {
+    "title": "Warif Learn",
+    "subtitle": "General educational content — experimental, pending medical review.",
+    "searchPlaceholder": "Search the library",
+    "allCategories": "All",
+    "cat_cycle": "Your cycle",
+    "cat_pain": "Pain & symptoms",
+    "cat_hormones": "Hormones",
+    "cat_fertility": "Fertility",
+    "cat_mental": "Mental health",
+    "cat_nutrition": "Nutrition & movement",
+    "cat_doctor": "When to see a doctor",
+    "noResults": "No matching results.",
+    "experimentalShort": "Experimental",
+    "readingMinutes": "{minutes} min read",
+    "backToLibrary": "Back to library",
+    "experimentalNote": "Experimental content — pending medical review; not a medical source.",
+    "reviewLabel": "Medical review",
+    "notReviewed": "Not yet reviewed",
+    "sourcesLabel": "Sources",
+    "noSources": "No sources yet"
+  },
+  "Community": {
+    "title": "Warif Community",
+    "subtitle": "A supportive, pseudonymous women's space.",
+    "heroAlt": "Illustration of a supportive Saudi women's community.",
+    "disclaimer": "Members' experiences are not a diagnosis or a treatment prescription.",
+    "backToSpaces": "Back to spaces",
+    "empty": "No posts yet in this space.",
+    "emptyAlt": "Illustration of a supportive community."
+  },
+  "Insights": {
+    "title": "Insights",
+    "subtitle": "General patterns from your logs — not a diagnosis.",
+    "dataSourceNote": "All figures are computed from your logs on this device over the last 30 days and your recorded cycles.",
+    "cycleSection": "Cycle",
+    "medianCycle": "Median cycle length",
+    "cyclesLogged": "Cycles logged",
+    "confidenceNote": "Prediction confidence: {level}",
+    "confidence_insufficient": "Insufficient",
+    "confidence_low": "Low",
+    "confidence_medium": "Medium",
+    "confidence_high": "High",
+    "days": "{n} days",
+    "wellbeingSection": "Mood, energy & sleep",
+    "noCheckins": "Not enough check-ins yet.",
+    "avgMood": "Avg mood",
+    "avgEnergy": "Avg energy",
+    "avgSleep": "Avg sleep",
+    "loggingSection": "Logging",
+    "loggedDays": "Logged days",
+    "ofDays": "{n} of 30",
+    "bleedingDays": "Bleeding days",
+    "notDiagnosis": "These are observations from your logs, not a diagnosis."
+  },
+  "Reports": {
+    "title": "Reports",
+    "subtitle": "A health summary you can share with your doctor.",
+    "comingSoon": "The PDF report is being prepared behind a temporary flag.",
+    "point1": "Created only at your explicit request.",
+    "point2": "You choose which sections appear.",
+    "point3": "A short-lived download link; the admin team cannot download it."
+  },
+  "PrivacyCenter": {
+    "title": "Privacy",
+    "subtitle": "Control your data and how it's shown.",
+    "intro": "Your health data is stored on this device only and is never sent to any server.",
+    "personasTitle": "Show visual personas",
+    "personasBody": "Show a calm state for your phase, or turn it off for a plainer interface.",
+    "sensitiveTitle": "Hide sensitive info",
+    "sensitiveBody": "Use the eye button at the top to quickly blur sensitive numbers.",
+    "dataTitle": "Your data",
+    "keepOnDevice": "You can keep your data on this device only.",
+    "exportData": "Export my data",
+    "clearData": "Delete my local data",
+    "cleared": "Your data has been deleted from this device."
+  },
+  "Subscription": {
+    "title": "Subscription",
+    "subtitle": "Your plan and free trial.",
+    "localModeNote": "You're currently in local mode on this device.",
+    "trialNote": "The 14-day trial only starts after admin activation in a later phase."
   }
 }

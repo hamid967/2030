@@ -61,6 +61,23 @@ architecture + privacy ADRs.
   `public/illustrations/` and are rendered with `next/image` (alt text comes
   from i18n messages). `themeColor` is set via the `viewport` export in
   `src/app/[locale]/layout.tsx`.
+- Dates: never use `toISOString().slice(0,10)` for a local date. Use
+  `getLocalDateISO()` from `src/lib/datetime.ts` (defaults to `Asia/Riyadh`).
+  Prediction/engine functions are pure — always pass `today`/`generatedAt`.
+- Prediction: `src/lib/cycle-engine/predict.ts` (`predictCycle`) returns a
+  `confidence` (insufficient/low/medium/high) from Median + MAD over the logged
+  `periodStarts`. The cycle profile now keeps a `periodStarts[]` history
+  (append via `logPeriodStart`, the "بدأت الدورة" action).
+- Design tokens are semantic: use `--phase-menstrual/follicular/
+  ovulation-estimate/luteal`, `--surface-*`, `--text-*`, `--border-soft` (and
+  the `stillness/renewal/balance/containment` Tailwind aliases). Do not hardcode
+  hex. Visual "states" live in `src/lib/cycle-engine/visual-states.ts` and can be
+  turned off via the "visual personas" setting.
+- Storage seam: `src/lib/repositories` defines `CycleRepository`/
+  `CheckinRepository` with Local adapters; Supabase adapters + Auth/RLS are
+  Batch 2 (see `docs/batch-2-plan.md`). Learn/Community are prototypes backed by
+  typed fixtures in `src/lib/content` and `src/lib/community` (seed content is
+  labelled experimental — never present it as approved medical content).
 - CI: `.eas/workflows/ci.yml` is an EAS Workflow (custom job) that runs
   `lint`/`typecheck`/`test`/`build` on push to `main`, PRs, or manual runs.
   When running it from the EAS dashboard, pick a **git ref that contains the

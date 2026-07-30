@@ -82,6 +82,31 @@ export function useCycleProfile() {
   );
 
   const saveProfile = useCallback((next: CycleProfile) => {
+    // Keep periodStarts in sync so predictions have history to work with.
+    const starts = Array.from(
+      new Set([...(next.periodStarts ?? []), next.lastPeriodStart]),
+    ).sort();
+    const withHistory: CycleProfile = { ...next, periodStarts: starts };
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(withHistory));
+    emit();
+  }, []);
+
+  /** Record a new period start ("بدأت الدورة") — appends to history. */
+  const logPeriodStart = useCallback((dateIso: string) => {
+    const current = getSnapshot();
+    if (!current) return;
+    const starts = Array.from(
+      new Set([
+        ...(current.periodStarts ?? [current.lastPeriodStart]),
+        dateIso,
+      ]),
+    ).sort();
+    const lastPeriodStart = starts[starts.length - 1];
+    const next: CycleProfile = {
+      ...current,
+      lastPeriodStart,
+      periodStarts: starts,
+    };
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
     emit();
   }, []);
@@ -91,5 +116,5 @@ export function useCycleProfile() {
     emit();
   }, []);
 
-  return { profile, hydrated, saveProfile, clearProfile };
+  return { profile, hydrated, saveProfile, logPeriodStart, clearProfile };
 }
