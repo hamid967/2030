@@ -61,6 +61,10 @@ architecture + privacy ADRs.
   `public/illustrations/` and are rendered with `next/image` (alt text comes
   from i18n messages). `themeColor` is set via the `viewport` export in
   `src/app/[locale]/layout.tsx`.
+- CI: `.eas/workflows/ci.yml` is an EAS Workflow (custom job) that runs
+  `lint`/`typecheck`/`test`/`build` on push to `main`, PRs, or manual runs.
+  When running it from the EAS dashboard, pick a **git ref that contains the
+  file** (e.g. `main`). It's a generic Node CI job — no native Expo build yet.
 - Phase 1 auth lives under the `(auth)` route group (`onboarding`,
   `auth/sign-up`, `auth/login`, `auth/verify`, `auth/consents`,
   `pending-activation`). It is a **client-side, localStorage-backed stand-in for
