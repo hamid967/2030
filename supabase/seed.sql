@@ -1,0 +1,4 @@
+-- Warif seed data.
+-- Fully fictional Saudi/Arabic data is added from Phase 1 onward
+-- (see blueprint section 15). Never insert real personal or health data.
+-- This file intentionally starts empty for Phase 0 (foundation).
