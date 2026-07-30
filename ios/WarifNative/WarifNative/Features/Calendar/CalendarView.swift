@@ -3,6 +3,8 @@ import SwiftUI
 struct CalendarView: View {
     @Environment(AppEnvironment.self) private var environment
     @State private var profile: CycleProfile?
+    @State private var editingPeriod = false
+    @State private var periodStartDate = Date()
 
     private let calendar = WarifCalendar.riyadh
 
@@ -24,8 +26,47 @@ struct CalendarView: View {
             }
             .navigationTitle("التقويم")
             .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        editingPeriod = true
+                    } label: {
+                        Label("تعديل الدورة", systemImage: "drop")
+                    }
+                }
+            }
+            .sheet(isPresented: $editingPeriod) { editPeriodSheet }
         }
         .task { profile = await environment.cycle.getProfile() }
+    }
+
+    private var editPeriodSheet: some View {
+        NavigationStack {
+            Form {
+                Section("بداية الدورة") {
+                    DatePicker(
+                        "تاريخ البداية", selection: $periodStartDate,
+                        in: ...Date(), displayedComponents: .date
+                    )
+                    .datePickerStyle(.graphical)
+                }
+            }
+            .navigationTitle("تعديل الدورة")
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("حفظ") {
+                        Task {
+                            await environment.cycle.logPeriodStart(periodStartDate)
+                            profile = await environment.cycle.getProfile()
+                            editingPeriod = false
+                        }
+                    }
+                }
+                ToolbarItem(placement: .cancelAction) {
+                    Button("إلغاء") { editingPeriod = false }
+                }
+            }
+        }
     }
 
     private var monthGrid: some View {

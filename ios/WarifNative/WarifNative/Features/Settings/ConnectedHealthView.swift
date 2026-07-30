@@ -29,6 +29,10 @@ struct ConnectedHealthView: View {
 
                 Button("ربط تطبيق صحتي") { Task { await connect() } }
                     .warifPrimaryButton()
+                NavigationLink("عرض أنماط النبض والنوم") {
+                    HeartCycleInsightsView()
+                }
+                .font(.callout)
                 Text("مو الحين")
                     .font(.footnote)
                     .foregroundStyle(.secondary)

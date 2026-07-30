@@ -3,6 +3,10 @@ import SwiftUI
 struct SettingsView: View {
     var body: some View {
         List {
+            Section("المتابعة") {
+                NavigationLink("الرؤى") { InsightsView() }
+                NavigationLink("الإشعارات") { NotificationsView() }
+            }
             Section("التخصيص") {
                 NavigationLink("ثيم المنطقة") { RegionalThemePickerView() }
             }

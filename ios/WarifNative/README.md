@@ -66,6 +66,9 @@ iPhone** — automated tests use `MockHealthDataProvider` only.
 ## Deferred (next batches)
 
 Supabase live repositories + Auth/RLS, admin activation + server-side 14-day
-trial, HealthKit daily aggregation (HKStatisticsCollectionQuery) + Swift Charts
-overlays, calendar day-details/period editor, notifications, subscription,
-menstrual-flow HealthKit write (Phase 2), optional watchOS companion.
+trial, the live HealthKit `HKStatisticsCollectionQuery` aggregation (the
+`HealthAggregationActor` and the Swift Charts overlay UI already exist; wiring
+the real query on-device is the remaining piece), calendar day-details view,
+subscription, menstrual-flow HealthKit write (Phase 2), optional watchOS
+companion. Sign in with Apple nonce hashing, the region theme system, the
+period-edit sheet, and generic-copy notifications are implemented in this PR.
