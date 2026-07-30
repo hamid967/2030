@@ -77,5 +77,44 @@
     "lutealName": "Luteal phase",
     "lutealStory": "Before your next period, mood may shift or some symptoms may appear. This is common and passes.",
     "lutealTip": "Enough sleep and a calm routine can help a lot."
+  },
+  "Nav": {
+    "label": "Main navigation",
+    "today": "Today",
+    "calendar": "Calendar",
+    "checkIn": "Check-in"
+  },
+  "CheckIn": {
+    "title": "Daily check-in",
+    "subtitle": "A few seconds to log your day.",
+    "moodLabel": "Mood",
+    "energyLabel": "Energy",
+    "sleepLabel": "Sleep",
+    "flowLabel": "Bleeding intensity",
+    "flowNone": "None",
+    "flowLight": "Light",
+    "flowMedium": "Medium",
+    "flowHeavy": "Heavy",
+    "save": "Save day",
+    "saved": "Saved",
+    "privacyNote": "Your check-ins are stored only on your device and never sent to any server."
+  },
+  "WeekSummary": {
+    "title": "Last 7 days",
+    "empty": "No check-ins yet. Log your day to see your patterns.",
+    "logCta": "Log your day",
+    "basedOn": "Based on {count} logged days"
+  },
+  "Calendar": {
+    "title": "Cycle calendar",
+    "subtitle": "A monthly view coloured by phase. Upcoming days are estimates.",
+    "needSetup": "Set up your cycle details first to see the calendar.",
+    "goSetup": "Set up cycle",
+    "legendPeriod": "Menstruation",
+    "legendFertile": "Estimated fertile window",
+    "legendToday": "Today",
+    "prevMonth": "Previous month",
+    "nextMonth": "Next month",
+    "estimateNote": "Upcoming days are estimates that may change and are not a contraception method."
   }
 }

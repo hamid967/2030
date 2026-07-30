@@ -2,7 +2,7 @@ import type { CyclePhase, CycleProfile, CycleStatus } from "./types";
 
 export * from "./types";
 
-export const CYCLE_ENGINE_VERSION = "cycle-engine@0.1.0";
+export const CYCLE_ENGINE_VERSION = "cycle-engine@0.2.0";
 
 /** Luteal phase is biologically fairly constant (~14 days). */
 const LUTEAL_LENGTH = 14;
@@ -14,6 +14,14 @@ const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
 function clamp(value: number, min: number, max: number): number {
   return Math.min(Math.max(value, min), max);
+}
+
+export function normalizeCycleLength(value: number): number {
+  return clamp(Math.round(value), 21, 45);
+}
+
+export function normalizePeriodLength(value: number): number {
+  return clamp(Math.round(value), 1, 10);
 }
 
 /** Parse an ISO date-only string as UTC midnight (timezone-safe). */
@@ -29,27 +37,76 @@ function toIsoDate(date: Date): string {
   return date.toISOString().slice(0, 10);
 }
 
-function addDays(iso: string, days: number): string {
+export function addDays(iso: string, days: number): string {
   return toIsoDate(new Date(parseUtcDate(iso).getTime() + days * MS_PER_DAY));
 }
 
-function diffInDays(from: string, to: string): number {
+export function diffInDays(from: string, to: string): number {
   return Math.floor(
     (parseUtcDate(to).getTime() - parseUtcDate(from).getTime()) / MS_PER_DAY,
   );
 }
 
-function determinePhase(
+interface FertileWindow {
+  ovulationDay: number;
+  startDay: number;
+  endDay: number;
+}
+
+function fertileWindow(cycleLength: number): FertileWindow {
+  const ovulationDay = clamp(cycleLength - LUTEAL_LENGTH, 1, cycleLength);
+  return {
+    ovulationDay,
+    startDay: clamp(ovulationDay - FERTILE_BEFORE, 1, cycleLength),
+    endDay: clamp(ovulationDay + FERTILE_AFTER, 1, cycleLength),
+  };
+}
+
+export function phaseForCycleDay(
   cycleDay: number,
   periodLength: number,
-  fertile: { startDay: number; endDay: number },
+  cycleLength: number,
 ): CyclePhase {
+  const fw = fertileWindow(cycleLength);
   if (cycleDay <= periodLength) return "menstruation";
-  if (cycleDay >= fertile.startDay && cycleDay <= fertile.endDay) {
-    return "ovulation";
-  }
-  if (cycleDay < fertile.startDay) return "follicular";
+  if (cycleDay >= fw.startDay && cycleDay <= fw.endDay) return "ovulation";
+  if (cycleDay < fw.startDay) return "follicular";
   return "luteal";
+}
+
+export interface DayClassification {
+  cycleDay: number;
+  phase: CyclePhase;
+  isPeriod: boolean;
+  isFertile: boolean;
+  isOvulation: boolean;
+}
+
+/**
+ * Classify any calendar date (past, present or future) against the cycle
+ * pattern. Used by the calendar; future days are projections/estimates.
+ */
+export function getDayClassification(
+  profile: CycleProfile,
+  dateIso: string,
+): DayClassification {
+  const cycleLength = normalizeCycleLength(profile.cycleLength);
+  const periodLength = normalizePeriodLength(profile.periodLength);
+
+  const daysSince = diffInDays(profile.lastPeriodStart, dateIso);
+  // Positive modulo so dates before the last period project backwards too.
+  const daysIntoCycle = ((daysSince % cycleLength) + cycleLength) % cycleLength;
+  const cycleDay = daysIntoCycle + 1;
+
+  const fw = fertileWindow(cycleLength);
+
+  return {
+    cycleDay,
+    phase: phaseForCycleDay(cycleDay, periodLength, cycleLength),
+    isPeriod: cycleDay <= periodLength,
+    isFertile: cycleDay >= fw.startDay && cycleDay <= fw.endDay,
+    isOvulation: cycleDay === fw.ovulationDay,
+  };
 }
 
 /**
@@ -62,8 +119,8 @@ export function computeCycleStatus(
   profile: CycleProfile,
   today: string,
 ): CycleStatus {
-  const cycleLength = clamp(Math.round(profile.cycleLength), 21, 45);
-  const periodLength = clamp(Math.round(profile.periodLength), 1, 10);
+  const cycleLength = normalizeCycleLength(profile.cycleLength);
+  const periodLength = normalizePeriodLength(profile.periodLength);
 
   const daysSince = diffInDays(profile.lastPeriodStart, today);
   if (daysSince < 0) {
@@ -80,15 +137,7 @@ export function computeCycleStatus(
   );
   const daysUntilNextPeriod = cycleLength - daysIntoCycle;
 
-  const ovulationEstimateDay = clamp(
-    cycleLength - LUTEAL_LENGTH,
-    1,
-    cycleLength,
-  );
-  const fertileWindowEstimate = {
-    startDay: clamp(ovulationEstimateDay - FERTILE_BEFORE, 1, cycleLength),
-    endDay: clamp(ovulationEstimateDay + FERTILE_AFTER, 1, cycleLength),
-  };
+  const fw = fertileWindow(cycleLength);
 
   // Wider ranges for longer cycles, since variability grows with length.
   const margin = clamp(Math.round(cycleLength * 0.07), 1, 4);
@@ -98,15 +147,15 @@ export function computeCycleStatus(
     generatedAt: new Date().toISOString(),
     cycleDay,
     cycleLength,
-    phase: determinePhase(cycleDay, periodLength, fertileWindowEstimate),
+    phase: phaseForCycleDay(cycleDay, periodLength, cycleLength),
     daysUntilNextPeriod,
     nextPeriodStart,
     nextPeriodRange: {
       earliest: addDays(nextPeriodStart, -margin),
       latest: addDays(nextPeriodStart, margin),
     },
-    ovulationEstimateDay,
-    fertileWindowEstimate,
+    ovulationEstimateDay: fw.ovulationDay,
+    fertileWindowEstimate: { startDay: fw.startDay, endDay: fw.endDay },
     isEstimate: true,
   };
 }
