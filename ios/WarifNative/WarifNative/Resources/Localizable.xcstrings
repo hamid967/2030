@@ -1,0 +1,51 @@
+{
+  "sourceLanguage" : "ar",
+  "strings" : {
+    "التقويم" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Calendar" } }
+      }
+    },
+    "المجتمع" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Community" } }
+      }
+    },
+    "الإعدادات" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Settings" } }
+      }
+    },
+    "الرؤى" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Insights" } }
+      }
+    },
+    "تسجيل" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Check-in" } }
+      }
+    },
+    "تسجيل اليوم" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Daily check-in" } }
+      }
+    },
+    "دليل وريف" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Warif Learn" } }
+      }
+    },
+    "سجّلي يومك" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Log your day" } }
+      }
+    },
+    "يومي" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Today" } }
+      }
+    }
+  },
+  "version" : "1.0"
+}
