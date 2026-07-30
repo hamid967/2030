@@ -33,5 +33,49 @@
   "Footer": {
     "phase": "Phase 0 — Foundation",
     "rights": "All rights reserved"
+  },
+  "Today": {
+    "title": "My day with Warif",
+    "subtitle": "A calm glimpse of your phase today, shown as an estimate.",
+    "dayLabel": "Day {day} of your cycle",
+    "cycleLengthLabel": "Cycle length {length} days",
+    "nextPeriodLabel": "Estimated next period",
+    "nextPeriodRange": "Between {earliest} and {latest}",
+    "daysUntil": "In about {days} days",
+    "ovulationLabel": "Estimated fertile window",
+    "fertileRange": "Days {start}–{end} of the cycle",
+    "storyTitle": "Your day's story",
+    "tipTitle": "Be kind to yourself today",
+    "editButton": "Edit my cycle details",
+    "resetButton": "Clear my data",
+    "estimateNote": "These are estimates based on the averages you entered and may change. The more you log, the better the prediction.",
+    "notContraception": "The fertile window is not a contraception method, and this is not medical advice.",
+    "privacyNote": "Your data is stored only on your device and is never sent to any server."
+  },
+  "CycleSetup": {
+    "title": "Set up your cycle",
+    "intro": "We only need three details to show your daily glimpse. You can change them anytime.",
+    "lastPeriodLabel": "When did your last period start?",
+    "cycleLengthLabel": "How many days does your cycle usually last?",
+    "periodLengthLabel": "How many days does your period usually last?",
+    "submit": "Show my day",
+    "errorRequired": "This field is required",
+    "errorFuture": "The date cannot be in the future",
+    "errorCycleRange": "Enter a number between 21 and 45",
+    "errorPeriodRange": "Enter a number between 1 and 10"
+  },
+  "Phase": {
+    "menstruationName": "Menstruation",
+    "menstruationStory": "Your body is starting a new cycle. It's natural to want more rest and to feel lower energy.",
+    "menstruationTip": "Give yourself rest, warmth and plenty of water.",
+    "follicularName": "Follicular phase",
+    "follicularStory": "Energy often rises gradually after your period ends, and mood and focus may improve.",
+    "follicularTip": "A good time for movement and activities you enjoy.",
+    "ovulationName": "Estimated fertile window",
+    "ovulationStory": "Your cycle is nearing its midpoint. You may notice small changes in energy or discharge.",
+    "ovulationTip": "Listen to your body and stay well hydrated.",
+    "lutealName": "Luteal phase",
+    "lutealStory": "Before your next period, mood may shift or some symptoms may appear. This is common and passes.",
+    "lutealTip": "Enough sleep and a calm routine can help a lot."
   }
 }

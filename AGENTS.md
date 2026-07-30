@@ -42,3 +42,11 @@ architecture + privacy ADRs.
 - Privacy is a hard product constraint (separate account/health/community
   identities, deny-by-default RLS, no health data in logs/URLs/analytics). See
   `docs/privacy-model.md` before touching data models or logging.
+- The "My day with Warif" experience lives at `/[locale]/today`. The cycle math
+  is a pure, tested module in `src/lib/cycle-engine/` (inject `today` — never
+  read the clock inside it, so tests stay deterministic). In this pre-backend
+  MVP the cycle profile is stored **client-side only** in `localStorage` via
+  `src/hooks/use-cycle-profile.ts` (health data never leaves the device); this
+  hook is the single seam to swap to an RLS-protected store later. All engine
+  outputs are estimates and must keep the non-diagnostic / not-contraception
+  disclaimers.
