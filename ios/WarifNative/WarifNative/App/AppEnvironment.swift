@@ -15,6 +15,8 @@ final class AppEnvironment {
     let health: any HealthDataProviding
     let regionLocator: any RegionLocating
     let secureStore: any SecureStore
+    let wellnessProfile: any WellnessProfileProviding
+    let notifications: any NotificationScheduling
     let regionTheme: RegionThemeStore
 
     init(
@@ -27,6 +29,8 @@ final class AppEnvironment {
         health: any HealthDataProviding,
         regionLocator: any RegionLocating,
         secureStore: any SecureStore,
+        wellnessProfile: any WellnessProfileProviding,
+        notifications: any NotificationScheduling,
         regionTheme: RegionThemeStore
     ) {
         self.auth = auth
@@ -38,11 +42,14 @@ final class AppEnvironment {
         self.health = health
         self.regionLocator = regionLocator
         self.secureStore = secureStore
+        self.wellnessProfile = wellnessProfile
+        self.notifications = notifications
         self.regionTheme = regionTheme
     }
 
     /// Local/mock environment (used until the Supabase backend layer lands).
     static func local() -> AppEnvironment {
+        let secureStore = KeychainSecureStore()
         AppEnvironment(
             auth: MockAuthRepository(),
             member: MockMemberRepository(),
@@ -52,7 +59,9 @@ final class AppEnvironment {
             community: MockCommunityRepository(),
             health: HealthKitClient(),
             regionLocator: CoreLocationRegionLocator(),
-            secureStore: InMemorySecureStore(),
+            secureStore: secureStore,
+            wellnessProfile: SecureWellnessProfileStore(secureStore: secureStore),
+            notifications: LocalNotificationScheduler(),
             regionTheme: RegionThemeStore()
         )
     }
@@ -68,6 +77,8 @@ final class AppEnvironment {
             health: MockHealthDataProvider(),
             regionLocator: MockRegionLocator(),
             secureStore: InMemorySecureStore(),
+            wellnessProfile: MockWellnessProfileStore(),
+            notifications: MockNotificationScheduler(),
             regionTheme: RegionThemeStore()
         )
     }

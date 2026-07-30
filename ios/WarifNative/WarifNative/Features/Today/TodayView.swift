@@ -193,7 +193,7 @@ struct TodayView: View {
                 checkIns: checkIns,
                 healthSummaries: healthSummaries,
                 region: environment.regionTheme.preference?.region,
-                wellnessProfile: .starter
+                wellnessProfile: await environment.wellnessProfile.load()
             )
         )
     }

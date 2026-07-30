@@ -9,6 +9,7 @@ struct SettingsView: View {
             }
             Section("التخصيص") {
                 NavigationLink("ثيم المنطقة") { RegionalThemePickerView() }
+                NavigationLink("تخصيص العافية") { WellnessProfileView() }
             }
             Section("الصحة") {
                 NavigationLink("ربط تطبيق صحتي") { ConnectedHealthView() }
