@@ -50,3 +50,11 @@ architecture + privacy ADRs.
   hook is the single seam to swap to an RLS-protected store later. All engine
   outputs are estimates and must keep the non-diagnostic / not-contraception
   disclaimers.
+- Member pages share an app shell in `src/app/[locale]/(member)/layout.tsx`
+  (header + bottom nav); tabs are `today`, `calendar`, `check-in`. Daily
+  check-ins are also sensitive health data, stored client-side only via
+  `src/hooks/use-checkins.ts` (pure helpers/tests in `src/lib/checkins`).
+  Client stores use `useSyncExternalStore` for hydration safety — read
+  `today`/dates only after the `hydrated` flag to avoid SSR mismatches.
+- PWA: `src/app/manifest.ts` + `public/icon*.svg`; `themeColor` is set via the
+  `viewport` export in `src/app/[locale]/layout.tsx`.
