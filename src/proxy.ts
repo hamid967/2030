@@ -38,11 +38,10 @@ export default async function proxy(request: NextRequest) {
 
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const demoAuthEnabled = process.env.NEXT_PUBLIC_DEMO_AUTH_ENABLED !== "false";
 
-  if (!url || !anonKey) {
-    return process.env.NODE_ENV === "production"
-      ? loginRedirect(request, protectedLocale)
-      : response;
+  if (demoAuthEnabled || !url || !anonKey) {
+    return response;
   }
 
   const supabase = createServerClient(url, anonKey, {
