@@ -21,7 +21,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "expo": "^54.0.0",
-    "expo-modules-autolinking": "^3.0.28",
+    "expo-modules-autolinking": "3.0.26",
     "lucide-react": "^1.28.0",
     "next": "16.2.12",
     "next-intl": "^4.13.4",
