@@ -30,7 +30,7 @@ const destinationFor: Record<AccountStatus, string> = {
 export function LoginForm() {
   const t = useTranslations("Auth");
   const router = useRouter();
-  const { account } = useAccount();
+  const { signIn, signInWithApple } = useAccount();
   const [notFound, setNotFound] = useState(false);
 
   const {
@@ -51,12 +51,13 @@ export function LoginForm() {
         className="mt-6 flex flex-col gap-5"
         noValidate
         onSubmit={handleSubmit((values) => {
-          if (account && account.email === values.email.trim()) {
-            setNotFound(false);
-            router.push(destinationFor[account.status]);
-          } else {
+          const next = signIn(values);
+          if (!next) {
             setNotFound(true);
+            return;
           }
+          setNotFound(false);
+          router.push(destinationFor[next.status]);
         })}
       >
         <div className="flex flex-col gap-1.5">
@@ -92,8 +93,27 @@ export function LoginForm() {
         </Button>
       </form>
 
+      <div className="my-5 flex items-center gap-3 text-xs text-muted">
+        <span className="h-px flex-1 bg-border" />
+        <span>{t("dividerOr")}</span>
+        <span className="h-px flex-1 bg-border" />
+      </div>
+
+      <Button
+        type="button"
+        variant="outline"
+        size="lg"
+        className="w-full"
+        onClick={() => {
+          signInWithApple();
+          router.push("/today");
+        }}
+      >
+        {t("continueWithApple")}
+      </Button>
+
       <p className="mt-4 text-center text-sm text-muted">
-        {t("noAccount")}{" "}
+        {t("noAccount")} {" "}
         <Link
           href="/auth/sign-up"
           className="font-medium text-primary hover:text-primary-strong"
