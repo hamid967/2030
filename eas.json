@@ -6,6 +6,7 @@
   "build": {
     "development-simulator": {
       "distribution": "internal",
+      "environment": "development",
       "ios": {
         "simulator": true,
         "resourceClass": "medium"
@@ -13,12 +14,15 @@
     },
     "preview": {
       "distribution": "internal",
+      "environment": "preview",
       "ios": {
         "simulator": true,
         "resourceClass": "medium"
       }
     },
     "production": {
+      "distribution": "store",
+      "environment": "production",
       "ios": {
         "resourceClass": "medium"
       }
