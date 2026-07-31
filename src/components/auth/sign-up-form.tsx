@@ -28,7 +28,7 @@ const errorKey: Record<string, string> = {
 export function SignUpForm() {
   const t = useTranslations("Auth");
   const router = useRouter();
-  const { signUp } = useAccount();
+  const { signUp, signInWithApple } = useAccount();
 
   const {
     register,
@@ -52,7 +52,7 @@ export function SignUpForm() {
         noValidate
         onSubmit={handleSubmit((values) => {
           signUp({ email: values.email, displayName: values.displayName });
-          router.push("/auth/verify");
+          router.push("/today");
         })}
       >
         <div className="flex flex-col gap-1.5">
@@ -103,8 +103,27 @@ export function SignUpForm() {
         </Button>
       </form>
 
+      <div className="my-5 flex items-center gap-3 text-xs text-muted">
+        <span className="h-px flex-1 bg-border" />
+        <span>{t("dividerOr")}</span>
+        <span className="h-px flex-1 bg-border" />
+      </div>
+
+      <Button
+        type="button"
+        variant="outline"
+        size="lg"
+        className="w-full"
+        onClick={() => {
+          signInWithApple();
+          router.push("/today");
+        }}
+      >
+        {t("continueWithApple")}
+      </Button>
+
       <p className="mt-4 text-center text-sm text-muted">
-        {t("haveAccount")}{" "}
+        {t("haveAccount")} {" "}
         <Link
           href="/auth/login"
           className="font-medium text-primary hover:text-primary-strong"
