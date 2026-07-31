@@ -1,0 +1,15 @@
+platform :ios, '18.0'
+
+project 'WarifNative.xcodeproj'
+
+target 'WarifNative' do
+  use_frameworks!
+end
+
+target 'WarifNativeTests' do
+  inherit! :search_paths
+end
+
+target 'WarifNativeUITests' do
+  inherit! :search_paths
+end
