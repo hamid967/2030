@@ -102,7 +102,6 @@ workflows:
           set -euo pipefail
           cd "$CM_BUILD_DIR/$IOS_DIR"
           set +e
-          set -o pipefail
           xcodebuild test \
             -workspace WarifNative.xcworkspace \
             -scheme "$TEST_SCHEME" \
@@ -113,9 +112,10 @@ workflows:
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY="" \
-            | tee "$CM_BUILD_DIR/xcodebuild-test.log"
-          TEST_EXIT=${PIPESTATUS[0]}
+            > "$CM_BUILD_DIR/xcodebuild-test.log" 2>&1
+          TEST_EXIT=$?
           set -e
+          cat "$CM_BUILD_DIR/xcodebuild-test.log"
           echo "WARIF_TEST_EXIT_CODE=$TEST_EXIT" | tee "$CM_BUILD_DIR/test-exit-code.log"
           if [ "$TEST_EXIT" -ne 0 ]; then
             echo "Unit tests failed in diagnostics mode. Build artifacts were produced; inspect xcodebuild-test.log and WarifNativeTests.xcresult." >&2
