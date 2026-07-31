@@ -1,12 +1,13 @@
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import Image from "next/image";
-import { Heart, MessageCircle, ArrowRight, ArrowLeft } from "lucide-react";
+import { ArrowRight, ArrowLeft } from "lucide-react";
 import {
   getSpace,
   postsForSpace,
   communitySpaces,
 } from "@/lib/community/fixtures";
+import { CommunitySpaceClient } from "@/components/community/community-space-client";
 import { Card } from "@/components/ui/card";
 import { Link } from "@/i18n/navigation";
 
@@ -57,35 +58,7 @@ export default async function SpacePage({
           <p className="text-muted">{t("empty")}</p>
         </Card>
       ) : (
-        <ul className="flex flex-col gap-4">
-          {posts.map((post) => (
-            <li key={post.id}>
-              <Card className="flex flex-col gap-3">
-                <div className="flex items-center gap-3">
-                  <span
-                    aria-hidden
-                    className="flex size-9 items-center justify-center rounded-full bg-lavender/30 text-sm font-bold text-primary-strong"
-                  >
-                    {post.pseudonym.slice(0, 1)}
-                  </span>
-                  <span className="font-medium text-text">
-                    {post.pseudonym}
-                  </span>
-                </div>
-                <p className="text-text">{post.body[loc]}</p>
-                <div className="flex items-center gap-4 text-sm text-muted">
-                  <span className="flex items-center gap-1">
-                    <Heart className="size-4" aria-hidden /> {post.reactions}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <MessageCircle className="size-4" aria-hidden />{" "}
-                    {post.comments}
-                  </span>
-                </div>
-              </Card>
-            </li>
-          ))}
-        </ul>
+        <CommunitySpaceClient spaceId={spaceId} seedPosts={posts} />
       )}
 
       <p className="text-center text-xs text-muted">{t("disclaimer")}</p>

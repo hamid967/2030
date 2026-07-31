@@ -1,4 +1,5 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { ThreeDCompanion } from "@/components/app/three-d-companion";
 import { TodayExperience } from "@/components/cycle/today-experience";
 import { WeekSummary } from "@/components/checkin/week-summary";
 
@@ -18,6 +19,9 @@ export default async function TodayPage({
         <p className="mt-1 text-muted">{t("Today.subtitle")}</p>
       </div>
       <TodayExperience />
+      <div className="mt-6">
+        <ThreeDCompanion />
+      </div>
       <div className="mt-6">
         <WeekSummary />
       </div>

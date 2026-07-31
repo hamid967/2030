@@ -7,7 +7,12 @@ import { cn } from "@/lib/utils";
  */
 export function WarifLogo({ className }: { className?: string }) {
   return (
-    <span className={cn("inline-flex items-center gap-2", className)}>
+    <span
+      className={cn(
+        "warif-logo-motion inline-flex items-center gap-2",
+        className,
+      )}
+    >
       <svg
         viewBox="0 0 48 48"
         role="img"
