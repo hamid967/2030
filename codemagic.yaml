@@ -1,0 +1,70 @@
+workflows:
+  ios-native-ci:
+    name: Waref Native iOS CI
+    max_build_duration: 120
+    instance_type: mac_mini_m2
+    environment:
+      xcode: latest
+      cocoapods: default
+      vars:
+        IOS_DIR: ios/WarifNative
+        XCODE_SCHEME: WarifNative
+        SIMULATOR_DESTINATION: platform=iOS Simulator,name=iPhone 16 Pro
+    triggering:
+      events:
+        - push
+        - pull_request
+      branch_patterns:
+        - pattern: main
+          include: true
+          source: true
+    cache:
+      cache_paths:
+        - $HOME/Library/Caches/CocoaPods
+        - $HOME/.cocoapods
+    scripts:
+      - name: Install XcodeGen
+        script: |
+          if ! command -v xcodegen >/dev/null 2>&1; then
+            brew install xcodegen
+          fi
+
+      - name: Generate Warif Native project
+        script: |
+          cd "$CM_BUILD_DIR/$IOS_DIR"
+          if [ ! -f Configuration/Secrets.xcconfig ]; then
+            cp Configuration/Secrets.example.xcconfig Configuration/Secrets.xcconfig
+          fi
+          xcodegen generate
+
+      - name: Install CocoaPods workspace
+        script: |
+          cd "$CM_BUILD_DIR/$IOS_DIR"
+          pod install --repo-update
+
+      - name: Run iOS tests
+        script: |
+          cd "$CM_BUILD_DIR/$IOS_DIR"
+          set -o pipefail
+          xcodebuild test \
+            -workspace WarifNative.xcworkspace \
+            -scheme "$XCODE_SCHEME" \
+            -destination "$SIMULATOR_DESTINATION" \
+            CODE_SIGNING_ALLOWED=NO \
+            | tee "$CM_BUILD_DIR/xcodebuild-test.log"
+
+      - name: Build simulator app
+        script: |
+          cd "$CM_BUILD_DIR/$IOS_DIR"
+          set -o pipefail
+          xcodebuild build \
+            -workspace WarifNative.xcworkspace \
+            -scheme "$XCODE_SCHEME" \
+            -destination "$SIMULATOR_DESTINATION" \
+            CODE_SIGNING_ALLOWED=NO \
+            | tee "$CM_BUILD_DIR/xcodebuild-build.log"
+    artifacts:
+      - xcodebuild-test.log
+      - xcodebuild-build.log
+      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.app
+      - $HOME/Library/Developer/Xcode/DerivedData/**/Logs/Test/*.xcresult
