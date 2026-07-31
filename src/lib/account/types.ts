@@ -34,6 +34,7 @@ export interface Account {
   id: string;
   email: string;
   displayName: string;
+  authProvider?: "email" | "apple" | "admin";
   status: AccountStatus;
   emailVerified: boolean;
   consents: Consents;
