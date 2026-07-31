@@ -4,7 +4,6 @@ import { useCallback, useSyncExternalStore } from "react";
 import {
   type Account,
   type Consents,
-  EMPTY_CONSENTS,
   approve as approveAccount,
   reject as rejectAccount,
   resubmit as resubmitAccount,
@@ -18,6 +17,13 @@ import {
  * pure, tested transition logic.
  */
 const STORAGE_KEY = "warif.account.v1";
+const ADMIN_EMAIL = (
+  process.env.NEXT_PUBLIC_WARIF_ADMIN_EMAIL ?? "abs005599@gmail.com"
+)
+  .trim()
+  .toLowerCase();
+const ADMIN_PASSWORD = process.env.NEXT_PUBLIC_WARIF_ADMIN_PASSWORD ?? "";
+const APPLE_DEMO_EMAIL = "apple-user@warif.local";
 
 let cachedRaw: string | null = null;
 let cachedValue: Account | null = null;
@@ -75,6 +81,42 @@ function randomDigits(n: number): string {
   return out;
 }
 
+function approvedAccount(input: {
+  email: string;
+  displayName: string;
+  authProvider: NonNullable<Account["authProvider"]>;
+}): Account {
+  return {
+    id:
+      typeof crypto !== "undefined" && "randomUUID" in crypto
+        ? crypto.randomUUID()
+        : randomDigits(12),
+    email: input.email.trim(),
+    displayName: input.displayName.trim(),
+    authProvider: input.authProvider,
+    status: "approved",
+    emailVerified: true,
+    consents: {
+      terms: true,
+      privacy: true,
+      health: true,
+      community: true,
+    },
+    requestNumber:
+      input.authProvider === "admin" ? "WRF-ADMIN" : `WRF-${randomDigits(6)}`,
+    createdAt: new Date().toISOString(),
+    verificationCode: "",
+  };
+}
+
+function isAdminLogin(email: string, password: string): boolean {
+  return (
+    Boolean(ADMIN_EMAIL && ADMIN_PASSWORD) &&
+    email.trim().toLowerCase() === ADMIN_EMAIL &&
+    password === ADMIN_PASSWORD
+  );
+}
+
 export function useAccount() {
   const account = useSyncExternalStore(
     subscribe,
@@ -89,25 +131,45 @@ export function useAccount() {
 
   const signUp = useCallback(
     (input: { email: string; displayName: string }): Account => {
-      const next: Account = {
-        id:
-          typeof crypto !== "undefined" && "randomUUID" in crypto
-            ? crypto.randomUUID()
-            : randomDigits(12),
+      const next = approvedAccount({
         email: input.email.trim(),
         displayName: input.displayName.trim(),
-        status: "email_unverified",
-        emailVerified: false,
-        consents: { ...EMPTY_CONSENTS },
-        requestNumber: `WRF-${randomDigits(6)}`,
-        createdAt: new Date().toISOString(),
-        verificationCode: randomDigits(6),
-      };
+        authProvider: "email",
+      });
       persist(next);
       return next;
     },
     [],
   );
+
+  const signIn = useCallback(
+    (input: { email: string; password: string }): Account | null => {
+      const email = input.email.trim();
+      const current = getSnapshot();
+      if (current && current.email.toLowerCase() === email.toLowerCase()) {
+        return current;
+      }
+      if (!isAdminLogin(email, input.password)) return null;
+      const next = approvedAccount({
+        email,
+        displayName: "Warif Admin",
+        authProvider: "admin",
+      });
+      persist(next);
+      return next;
+    },
+    [],
+  );
+
+  const signInWithApple = useCallback((): Account => {
+    const next = approvedAccount({
+      email: APPLE_DEMO_EMAIL,
+      displayName: "Apple User",
+      authProvider: "apple",
+    });
+    persist(next);
+    return next;
+  }, []);
 
   const verifyEmail = useCallback((code: string): boolean => {
     const current = getSnapshot();
@@ -163,6 +225,8 @@ export function useAccount() {
     account,
     hydrated,
     signUp,
+    signIn,
+    signInWithApple,
     verifyEmail,
     saveConsents,
     submitActivation,
