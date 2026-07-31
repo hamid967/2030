@@ -1,24 +1,25 @@
-name: CI
+name: Manual EAS quality check
 
-# Runs the web app's quality gate (lint, typecheck, unit tests, build).
-# Warif is currently a Next.js PWA (no native Expo build yet), so this is a
-# custom job — it does not use a `build`/`submit`/`update` pre-packaged job.
-# Any run can also be triggered manually from the EAS dashboard or with
-# `eas workflow:run .eas/workflows/ci.yml`, regardless of the `on` triggers.
+# Warif is now a Next.js PWA plus a native SwiftUI iOS project. GitHub Actions
+# owns the automatic quality gate in .github/workflows/ci.yml. This EAS workflow
+# stays available for manual Expo-dashboard checks only, so linked Expo projects
+# do not publish failing required statuses for every push.
 
 on:
-  push:
-    branches:
-      - main
-  pull_request: {}
+  workflow_dispatch: {}
+
+defaults:
+  tools:
+    node: 24
 
 jobs:
   quality:
-    name: Lint, typecheck, test, build
+    name: Manual lint, typecheck, test, build
     runs_on: linux-medium
     steps:
       - uses: eas/checkout
-      - uses: eas/install_node_modules
+      - name: Install dependencies
+        run: npm ci
       - name: Lint
         run: npm run lint
       - name: Typecheck
