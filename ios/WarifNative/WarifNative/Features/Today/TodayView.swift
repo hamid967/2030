@@ -22,7 +22,13 @@ struct TodayView: View {
                         checkInCTA
                         trustedContentCard
                     } else {
-                        WarifCard { Text("جارٍ تحضير يومك…").foregroundStyle(.secondary) }
+                        WarifCard {
+                            VStack(alignment: .leading, spacing: 6) {
+                                Text("يومك يبدأ من ملاحظة صغيرة").font(.headline)
+                                Text("أضيفي تاريخ دورة أو سجلي شعورك اليوم، وسنحوّله إلى صورة أوضح مع الوقت.")
+                                    .foregroundStyle(WarifBrand.mutedText)
+                            }
+                        }
                     }
                     disclaimer
                 }
@@ -72,7 +78,7 @@ struct TodayView: View {
 
     private var header: some View {
         VStack(spacing: 6) {
-            Text("صباح الخير، كيف تحسين اليوم؟")
+            Text("هلا بك، كيف تبين يكون يومك؟")
                 .font(.title3.weight(.semibold))
                 .foregroundStyle(WarifBrand.textPlum)
             if let region = environment.regionTheme.preference?.region {
@@ -112,11 +118,11 @@ struct TodayView: View {
            let latest = prediction.latestDate {
             WarifCard {
                 VStack(alignment: .leading, spacing: 6) {
-                    Text("الدورة القادمة المتوقعة").font(.headline)
+                    Text("الموعد القادم، بتقدير أهدأ").font(.headline)
                     Text("بين \(WarifFormat.mediumDate(earliest)) و\(WarifFormat.mediumDate(latest))")
                         .foregroundStyle(.secondary)
-                    Text("هذه تقديرات وقد يتغير الموعد حسب نمط جسمك.")
-                        .font(.footnote).foregroundStyle(.secondary)
+                    Text("تقدير يتعلم من تسجيلاتك، وليس موعداً ثابتاً.")
+                        .font(.footnote).foregroundStyle(WarifBrand.mutedText)
                 }
             }
         }
@@ -126,7 +132,7 @@ struct TodayView: View {
         NavigationLink {
             CheckInView()
         } label: {
-            Text("سجّلي يومك")
+            Text("سجّلي نبض يومك")
         }
         .warifPrimaryButton()
     }
@@ -140,7 +146,7 @@ struct TodayView: View {
                 VStack(alignment: .leading, spacing: 2) {
                     Text("ذكاء وريف")
                         .font(.headline)
-                    Text("خطة يومية مبنية على تسجيلاتك")
+                    Text("رؤية أصفى وخطوة مناسبة لهذا اليوم")
                         .font(.footnote)
                 }
                 Spacer()
@@ -155,9 +161,11 @@ struct TodayView: View {
     private var trustedContentCard: some View {
         WarifCard {
             VStack(alignment: .leading, spacing: 6) {
-                Text("معلومة موثوقة").font(.headline)
-                Text("سجّلي اللي تحسين فيه، حتى لو ما كان يومك مثالي.")
-                    .foregroundStyle(.secondary)
+                Label("كل تفصيلة تصنع فرقاً", systemImage: "quote.bubble")
+                    .font(.headline)
+                    .foregroundStyle(theme.primary)
+                Text("لا تحتاجين إلى يوم مثالي. ملاحظة صادقة واحدة اليوم تساعدك تفهمين نفسك غداً.")
+                    .foregroundStyle(WarifBrand.mutedText)
             }
         }
     }
@@ -233,7 +241,7 @@ struct TodayView: View {
         switch tone {
         case .calm, .privacy: WarifBrand.berryStrong
         case .encouraging: WarifBrand.berry
-        case .caution: Color.orange
+        case .caution: WarifBrand.alert
         }
     }
 }

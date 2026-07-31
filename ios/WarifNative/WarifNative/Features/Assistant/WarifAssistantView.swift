@@ -15,6 +15,7 @@ struct WarifAssistantView: View {
     var body: some View {
         VStack(spacing: 0) {
             consentBanner
+            quickPrompts
             ScrollViewReader { proxy in
                 ScrollView {
                     LazyVStack(spacing: 12) {
@@ -73,7 +74,7 @@ struct WarifAssistantView: View {
                 }
                 .accessibilityLabel(isListening ? "إيقاف التسجيل" : "بدء التسجيل الصوتي")
 
-                TextField("اسألي مساعد وريف…", text: $draft, axis: .vertical)
+                TextField("اكتبي ما يشغلك اليوم…", text: $draft, axis: .vertical)
                     .textFieldStyle(.roundedBorder)
                     .lineLimit(1...4)
 
@@ -94,6 +95,25 @@ struct WarifAssistantView: View {
     private var isListening: Bool {
         if case .listening = voice.state { return true }
         return false
+    }
+
+    private var quickPrompts: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 8) {
+                ForEach(["ما أولوية اليوم؟", "كيف أسجل الألم؟", "حضّريني لزيارة مختصة"], id: \.self) { prompt in
+                    Button(prompt) { draft = prompt }
+                        .font(.footnote.weight(.semibold))
+                        .foregroundStyle(WarifBrand.berryStrong)
+                        .padding(.horizontal, 12)
+                        .frame(minHeight: 36)
+                        .background(WarifBrand.rose.opacity(0.16))
+                        .clipShape(RoundedRectangle(cornerRadius: WarifBrand.controlCornerRadius))
+                }
+            }
+            .padding(.horizontal)
+            .padding(.vertical, 10)
+        }
+        .background(WarifBrand.ivory)
     }
 
     private func messageBubble(_ message: AssistantMessage) -> some View {
@@ -125,7 +145,7 @@ struct WarifAssistantView: View {
     }
 
     private func prepare() async {
-        messages = [AssistantMessage(role: .assistant, text: "مرحباً، أنا مساعد وريف. اسأليني عن طريقة تسجيل يومك أو عن أولوية عنايتك اليوم.")]
+        messages = [AssistantMessage(role: .assistant, text: "أهلاً بك. أنا مساعد وريف، أرتب معك يومك خطوة بخطوة وبأسلوب هادئ. قولي لي ما الذي تحتاجينه الآن.")]
         guard let profile = await environment.cycle.getProfile() else { return }
         let day = CycleEngine.cycleDay(lastPeriodStart: profile.lastPeriodStart, cycleLength: profile.cycleLength, today: .now)
         let phase = CycleEngine.phase(cycleDay: day, periodLength: profile.periodLength, cycleLength: profile.cycleLength)
@@ -161,7 +181,7 @@ struct WarifAssistantView: View {
         } catch {
             messages.append(AssistantMessage(
                 role: .assistant,
-                text: "تعذر الوصول للمساعد حالياً. يمكنك متابعة تسجيل يومك أو المحاولة لاحقاً."
+                text: "تعذر الوصول للمساعد الآن. سجلي ما تشعرين به أولاً، ثم عودي للمحادثة عندما تكون الشبكة جاهزة."
             ))
         }
     }

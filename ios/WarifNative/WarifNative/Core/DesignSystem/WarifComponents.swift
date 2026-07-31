@@ -6,13 +6,13 @@ struct WarifCard<Content: View>: View {
         content
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(16)
-            .background(Color(hex: "#FFFFFF"))
+            .background(WarifBrand.surface)
             .clipShape(RoundedRectangle(cornerRadius: WarifBrand.cardCornerRadius))
             .overlay(
                 RoundedRectangle(cornerRadius: WarifBrand.cardCornerRadius)
-                    .stroke(Color(hex: "#EADDE2"), lineWidth: 1)
+                    .stroke(WarifBrand.border, lineWidth: 1)
             )
-            .shadow(color: WarifBrand.berry.opacity(0.06), radius: 12, y: 4)
+            .shadow(color: WarifBrand.berry.opacity(0.05), radius: 8, y: 3)
     }
 }
 
@@ -24,7 +24,7 @@ struct WarifPrimaryButtonStyle: ButtonStyle {
             .padding(.horizontal, 20)
             .background(WarifBrand.berry)
             .foregroundStyle(.white)
-            .clipShape(Capsule())
+            .clipShape(RoundedRectangle(cornerRadius: WarifBrand.controlCornerRadius))
             .opacity(configuration.isPressed ? 0.85 : 1)
     }
 }
