@@ -18,6 +18,7 @@ struct TodayView: View {
                         ringSection(profile)
                         estimateSection
                         dailyInsightSection
+                        smartCareCTA
                         checkInCTA
                         trustedContentCard
                     } else {
@@ -126,6 +127,27 @@ struct TodayView: View {
             CheckInView()
         } label: {
             Text("سجّلي يومك")
+        }
+        .warifPrimaryButton()
+    }
+
+    private var smartCareCTA: some View {
+        NavigationLink {
+            SmartCareView()
+        } label: {
+            HStack(spacing: 10) {
+                Image(systemName: "sparkles")
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("ذكاء وريف")
+                        .font(.headline)
+                    Text("خطة يومية مبنية على تسجيلاتك")
+                        .font(.footnote)
+                }
+                Spacer()
+                Image(systemName: "chevron.left")
+                    .font(.footnote.weight(.semibold))
+            }
+            .foregroundStyle(.white)
         }
         .warifPrimaryButton()
     }
