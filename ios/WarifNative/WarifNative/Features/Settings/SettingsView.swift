@@ -13,6 +13,7 @@ struct SettingsView: View {
             }
             Section("الصحة") {
                 NavigationLink("ربط تطبيق صحتي") { ConnectedHealthView() }
+                NavigationLink("الساعات والأجهزة") { WearablesView() }
             }
             Section("الخصوصية") {
                 NavigationLink("مركز الخصوصية") { PrivacyCenterView() }

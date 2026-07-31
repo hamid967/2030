@@ -18,6 +18,7 @@ final class AppEnvironment {
     let wellnessProfile: any WellnessProfileProviding
     let notifications: any NotificationScheduling
     let assistant: any WarifAssistantProviding
+    let wearables: any WearableSyncing
     let regionTheme: RegionThemeStore
 
     init(
@@ -33,6 +34,7 @@ final class AppEnvironment {
         wellnessProfile: any WellnessProfileProviding,
         notifications: any NotificationScheduling,
         assistant: any WarifAssistantProviding,
+        wearables: any WearableSyncing,
         regionTheme: RegionThemeStore
     ) {
         self.auth = auth
@@ -47,6 +49,7 @@ final class AppEnvironment {
         self.wellnessProfile = wellnessProfile
         self.notifications = notifications
         self.assistant = assistant
+        self.wearables = wearables
         self.regionTheme = regionTheme
     }
 
@@ -66,6 +69,7 @@ final class AppEnvironment {
             wellnessProfile: SecureWellnessProfileStore(secureStore: secureStore),
             notifications: LocalNotificationScheduler(),
             assistant: AssistantGateway(),
+            wearables: WatchConnectivityClient(),
             regionTheme: RegionThemeStore()
         )
     }
@@ -84,6 +88,7 @@ final class AppEnvironment {
             wellnessProfile: MockWellnessProfileStore(),
             notifications: MockNotificationScheduler(),
             assistant: MockWarifAssistant(),
+            wearables: MockWearableSync(),
             regionTheme: RegionThemeStore()
         )
     }

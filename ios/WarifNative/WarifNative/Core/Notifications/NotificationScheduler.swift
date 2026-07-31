@@ -5,6 +5,7 @@ import UserNotifications
 protocol NotificationScheduling {
     func setDailyCheckIn(enabled: Bool, hour: Int, minute: Int) async throws
     func setCycleReminder(enabled: Bool) async throws
+    func setSmartReminder(_ plan: SmartReminderPlan?) async throws
 }
 
 /// All scheduled copy is intentionally generic so a notification never
@@ -13,6 +14,7 @@ struct LocalNotificationScheduler: NotificationScheduling {
     private let center = UNUserNotificationCenter.current()
     private let dailyID = "warif.daily-check-in"
     private let cycleID = "warif.cycle-reminder"
+    private let smartID = "warif.smart.daily"
 
     func setDailyCheckIn(enabled: Bool, hour: Int, minute: Int) async throws {
         center.removePendingNotificationRequests(withIdentifiers: [dailyID])
@@ -42,9 +44,23 @@ struct LocalNotificationScheduler: NotificationScheduling {
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 60 * 60 * 24 * 21, repeats: false)
         try await center.add(UNNotificationRequest(identifier: cycleID, content: content, trigger: trigger))
     }
+
+    func setSmartReminder(_ plan: SmartReminderPlan?) async throws {
+        center.removePendingNotificationRequests(withIdentifiers: [smartID])
+        guard let plan else { return }
+        guard try await center.requestAuthorization(options: [.alert, .badge, .sound]) else { return }
+
+        let content = UNMutableNotificationContent()
+        content.title = plan.title
+        content.body = plan.body
+        content.sound = .default
+        let trigger = UNCalendarNotificationTrigger(dateMatching: plan.fireDate, repeats: false)
+        try await center.add(UNNotificationRequest(identifier: plan.identifier, content: content, trigger: trigger))
+    }
 }
 
 struct MockNotificationScheduler: NotificationScheduling {
     func setDailyCheckIn(enabled: Bool, hour: Int, minute: Int) async throws {}
     func setCycleReminder(enabled: Bool) async throws {}
+    func setSmartReminder(_ plan: SmartReminderPlan?) async throws {}
 }

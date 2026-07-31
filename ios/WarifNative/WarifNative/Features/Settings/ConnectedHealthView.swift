@@ -14,7 +14,7 @@ struct ConnectedHealthView: View {
             VStack(spacing: 16) {
                 WarifCard {
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("اربطي بيانات الصحة باختيارك").font(.headline)
+                        Text("اربطي Apple Health باختيارك").font(.headline)
                         Text("يمكن لوريف قراءة ملخصات النبض والنوم والنشاط لعرض أنماط عامة بجانب تسجيلات دورتك. الربط اختياري ويمكن إيقافه من إعدادات iPhone في أي وقت.")
                             .font(.subheadline).foregroundStyle(.secondary)
                     }
@@ -27,7 +27,7 @@ struct ConnectedHealthView: View {
                     WarifCard { Text(status).font(.footnote).foregroundStyle(.secondary) }
                 }
 
-                Button("ربط تطبيق صحتي") { Task { await connect() } }
+                Button("طلب إذن Apple Health") { Task { await connect() } }
                     .warifPrimaryButton()
                 NavigationLink("عرض أنماط النبض والنوم") {
                     HeartCycleInsightsView()

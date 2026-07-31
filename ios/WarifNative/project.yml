@@ -38,6 +38,17 @@ targets:
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         CODE_SIGNING_ALLOWED: NO
 
+  WarifWatch:
+    type: application
+    platform: watchOS
+    sources:
+      - path: WarifWatch
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: $(WARIF_BUNDLE_ID).watchkitapp
+        WATCHOS_DEPLOYMENT_TARGET: "11.0"
+        CODE_SIGNING_ALLOWED: NO
+
   WarifNativeTests:
     type: bundle.unit-test
     platform: iOS
