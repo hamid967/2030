@@ -11,7 +11,10 @@ module.exports = {
     ios: {
       bundleIdentifier: "sa.warif.app",
       buildNumber: "1",
-      supportsTablet: false
+      supportsTablet: false,
+      infoPlist: {
+        ITSAppUsesNonExemptEncryption: false
+      }
     },
     extra: {
       eas: {
