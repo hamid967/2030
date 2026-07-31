@@ -27,12 +27,14 @@ protocol CycleRepository: Sendable {
     func getProfile() async -> CycleProfile?
     func saveProfile(_ profile: CycleProfile) async
     func logPeriodStart(_ date: Date) async
+    func clearProfile() async
 }
 
 protocol CheckInRepository: Sendable {
     func checkIn(on date: Date) async -> DailyCheckIn?
     func save(_ checkIn: DailyCheckIn) async
     func recent(days: Int, endingOn date: Date) async -> [DailyCheckIn]
+    func clearAll() async
 }
 
 protocol ContentRepository: Sendable {

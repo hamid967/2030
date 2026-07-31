@@ -52,8 +52,13 @@ struct NotificationsView: View {
     private func scheduleCycleReminder(_ enabled: Bool) {
         Task {
             do {
-                try await environment.notifications.setCycleReminder(enabled: enabled)
-                statusMessage = enabled ? "تم تحديث تذكير وريف العام." : "تم إيقاف التذكير العام."
+                let profile = await environment.cycle.getProfile()
+                try await environment.notifications.setCycleReminder(
+                    enabled: enabled, profile: profile, today: Date()
+                )
+                statusMessage = enabled
+                    ? "تم تحديث التذكير بناءً على توقع الدورة الحالي."
+                    : "تم إيقاف التذكير العام."
             } catch {
                 statusMessage = "تعذر تحديث الإشعار. تحققي من إذن الإشعارات في إعدادات iPhone."
             }

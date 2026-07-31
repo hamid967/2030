@@ -14,7 +14,7 @@ struct MockMemberRepository: MemberRepository {
 
 /// In-memory cycle store seeded with a regular ~28-day history.
 actor MockCycleRepository: CycleRepository {
-    private var profile: CycleProfile
+    private var profile: CycleProfile?
 
     init() {
         let calendar = WarifCalendar.riyadh
@@ -31,12 +31,17 @@ actor MockCycleRepository: CycleRepository {
     func getProfile() async -> CycleProfile? { profile }
     func saveProfile(_ profile: CycleProfile) async { self.profile = profile }
     func logPeriodStart(_ date: Date) async {
-        var starts = Set(profile.periodStarts)
+        var current = profile ?? CycleProfile(
+            lastPeriodStart: date, cycleLength: 28, periodLength: 5, periodStarts: []
+        )
+        var starts = Set(current.periodStarts)
         starts.insert(WarifCalendar.startOfDay(date))
         let sorted = starts.sorted()
-        profile.periodStarts = sorted
-        profile.lastPeriodStart = sorted.last ?? date
+        current.periodStarts = sorted
+        current.lastPeriodStart = sorted.last ?? date
+        profile = current
     }
+    func clearProfile() async { profile = nil }
 }
 
 actor MockCheckInRepository: CheckInRepository {
@@ -53,6 +58,7 @@ actor MockCheckInRepository: CheckInRepository {
             store[WarifCalendar.adding(-offset, to: WarifCalendar.startOfDay(date))]
         }
     }
+    func clearAll() async { store.removeAll() }
 }
 
 struct MockContentRepository: ContentRepository {

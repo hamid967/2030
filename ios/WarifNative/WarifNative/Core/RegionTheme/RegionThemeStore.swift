@@ -14,6 +14,7 @@ struct RegionPreference: Codable, Sendable {
 protocol RegionPreferenceStoring: Sendable {
     func load() -> RegionPreference?
     func save(_ preference: RegionPreference)
+    func remove()
 }
 
 /// Non-sensitive preference storage. Region choice is not health data.
@@ -30,6 +31,10 @@ struct UserDefaultsRegionPreferenceStore: RegionPreferenceStoring {
     func save(_ preference: RegionPreference) {
         guard let data = try? JSONEncoder().encode(preference) else { return }
         defaults.set(data, forKey: key)
+    }
+
+    func remove() {
+        defaults.removeObject(forKey: key)
     }
 }
 
@@ -78,6 +83,11 @@ final class RegionThemeStore {
         guard var next = preference else { return }
         next.useWarifBaseTheme = enabled
         apply(next)
+    }
+
+    func reset() {
+        preference = nil
+        storage.remove()
     }
 
     private func apply(_ next: RegionPreference) {

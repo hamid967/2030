@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  web:
+    name: Web lint, typecheck, test, build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+
+  ios:
+    name: iOS project validation
+    runs-on: macos-26
+    defaults:
+      run:
+        working-directory: ios/WarifNative
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install XcodeGen
+        run: brew install xcodegen
+      - name: Create CI config
+        run: cp Configuration/Secrets.example.xcconfig Configuration/Secrets.xcconfig
+      - name: Generate Xcode project
+        run: xcodegen generate
+      - name: Build iOS app
+        run: xcodebuild -scheme WarifNative -destination 'platform=iOS Simulator,name=iPhone 17' CODE_SIGNING_ALLOWED=NO build
+      - name: Test iOS app
+        run: xcodebuild test -scheme WarifNative -destination 'platform=iOS Simulator,name=iPhone 17' CODE_SIGNING_ALLOWED=NO

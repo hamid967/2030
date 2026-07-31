@@ -5,6 +5,7 @@ import Foundation
 protocol WellnessProfileProviding: Sendable {
     func load() async -> WellnessProfile
     func save(_ profile: WellnessProfile) async throws
+    func reset() async throws
 }
 
 struct SecureWellnessProfileStore: WellnessProfileProviding {
@@ -28,9 +29,14 @@ struct SecureWellnessProfileStore: WellnessProfileProviding {
         guard let value = String(data: data, encoding: .utf8) else { return }
         try secureStore.setString(value, for: key)
     }
+
+    func reset() async throws {
+        try secureStore.remove(key)
+    }
 }
 
 struct MockWellnessProfileStore: WellnessProfileProviding {
     func load() async -> WellnessProfile { .starter }
     func save(_ profile: WellnessProfile) async throws {}
+    func reset() async throws {}
 }

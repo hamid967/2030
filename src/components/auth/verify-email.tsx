@@ -50,11 +50,6 @@ export function VerifyEmail() {
         </p>
       </div>
 
-      {/* Demo aid only: a real deployment emails this code / a magic link. */}
-      <p className="rounded-2xl bg-lavender/15 px-4 py-2 text-sm text-primary-strong">
-        {t("verifyDemoHint", { code: account.verificationCode })}
-      </p>
-
       <div className="flex flex-col gap-1.5 text-start">
         <Label htmlFor="code">{t("verifyCodeLabel")}</Label>
         <Input

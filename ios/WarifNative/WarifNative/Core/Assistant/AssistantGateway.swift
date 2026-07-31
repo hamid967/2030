@@ -7,13 +7,16 @@ struct AssistantGateway: WarifAssistantProviding {
     private let fallback: LocalWarifAssistant
 
     init(bundle: Bundle = .main, fallback: LocalWarifAssistant = LocalWarifAssistant()) {
-        endpoint = bundle.object(forInfoDictionaryKey: "WARIF_AI_GATEWAY_URL")
-            .flatMap { $0 as? String }
-            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
-            .flatMap { value in
-                guard let url = URL(string: value), url.scheme?.lowercased() == "https" else { return nil }
-                return url
-            }
+        let cloudAllowed = (bundle.object(forInfoDictionaryKey: "WARIF_AI_CLOUD_ALLOWED") as? String) == "YES"
+        endpoint = cloudAllowed
+            ? bundle.object(forInfoDictionaryKey: "WARIF_AI_GATEWAY_URL")
+                .flatMap { $0 as? String }
+                .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+                .flatMap { value in
+                    guard let url = URL(string: value), url.scheme?.lowercased() == "https" else { return nil }
+                    return url
+                }
+            : nil
         self.fallback = fallback
     }
 
