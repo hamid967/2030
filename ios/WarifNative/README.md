@@ -36,6 +36,31 @@ xcodebuild \
   test
 ```
 
+## Appcircle build profile
+
+Appcircle must generate the Xcode project before `Cocoapods Install` and
+`xcodebuild`, because `WarifNative.xcodeproj` is produced from `project.yml` and
+is not committed.
+
+In the Appcircle workflow, keep a Custom Script step after `Git Clone` and before
+`Cocoapods Install` with:
+
+```bash
+bash ci/appcircle/prepare-ios.sh
+```
+
+Then set the build profile configuration to:
+
+- Project or Workspace: `ios/WarifNative/WarifNative.xcworkspace`
+- Scheme: `WarifNative`
+- Configuration: `Release`
+
+The committed `Podfile` is intentionally minimal so Appcircle's default
+`Cocoapods Install` step can create `WarifNative.xcworkspace` even while Warif
+currently has no third-party pods. If the CocoaPods step is removed from the
+workflow, use `ios/WarifNative/WarifNative.xcodeproj` as the project path
+instead.
+
 ## Verification status
 
 ⚠️ This scaffold was authored in a Linux CI environment with **no macOS / Xcode
@@ -56,6 +81,7 @@ iPhone** — automated tests use `MockHealthDataProvider` only.
 ## Layout
 
 - `project.yml` — XcodeGen spec (app + unit + UI test targets).
+- `Podfile` — minimal CocoaPods entry for Appcircle workspace generation.
 - `WarifNative/App` — entry point, environment, router, root view.
 - `WarifNative/Core` — DesignSystem, RegionTheme (13 regions), Cycle engine,
   Health, Location, Security, API (protocols + mocks).
