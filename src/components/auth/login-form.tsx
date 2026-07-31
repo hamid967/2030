@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useAccount } from "@/hooks/use-account";
 import { useRouter, Link } from "@/i18n/navigation";
 import type { AccountStatus } from "@/lib/account";
@@ -29,9 +29,13 @@ const destinationFor: Record<AccountStatus, string> = {
 
 export function LoginForm() {
   const t = useTranslations("Auth");
+  const locale = useLocale();
   const router = useRouter();
   const { signIn, signInWithApple } = useAccount();
   const [notFound, setNotFound] = useState(false);
+  const isArabic = locale === "ar";
+  const appleLabel = isArabic ? "المتابعة باستخدام Apple" : "Continue with Apple";
+  const dividerLabel = isArabic ? "أو" : "or";
 
   const {
     register,
@@ -95,7 +99,7 @@ export function LoginForm() {
 
       <div className="my-5 flex items-center gap-3 text-xs text-muted">
         <span className="h-px flex-1 bg-border" />
-        <span>{t("dividerOr")}</span>
+        <span>{dividerLabel}</span>
         <span className="h-px flex-1 bg-border" />
       </div>
 
@@ -109,7 +113,7 @@ export function LoginForm() {
           router.push("/today");
         }}
       >
-        {t("continueWithApple")}
+        {appleLabel}
       </Button>
 
       <p className="mt-4 text-center text-sm text-muted">
