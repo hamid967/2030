@@ -56,6 +56,12 @@ extension WarifWatchSession: WCSessionDelegate {
     nonisolated func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String: Any]) {
         Task { @MainActor [weak self] in self?.apply(applicationContext) }
     }
+
+    nonisolated func sessionDidBecomeInactive(_ session: WCSession) {}
+
+    nonisolated func sessionDidDeactivate(_ session: WCSession) {
+        session.activate()
+    }
 }
 
 private struct WatchTodayView: View {
