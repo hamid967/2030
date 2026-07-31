@@ -17,6 +17,7 @@ final class AppEnvironment {
     let secureStore: any SecureStore
     let wellnessProfile: any WellnessProfileProviding
     let notifications: any NotificationScheduling
+    let assistant: any WarifAssistantProviding
     let regionTheme: RegionThemeStore
 
     init(
@@ -31,6 +32,7 @@ final class AppEnvironment {
         secureStore: any SecureStore,
         wellnessProfile: any WellnessProfileProviding,
         notifications: any NotificationScheduling,
+        assistant: any WarifAssistantProviding,
         regionTheme: RegionThemeStore
     ) {
         self.auth = auth
@@ -44,6 +46,7 @@ final class AppEnvironment {
         self.secureStore = secureStore
         self.wellnessProfile = wellnessProfile
         self.notifications = notifications
+        self.assistant = assistant
         self.regionTheme = regionTheme
     }
 
@@ -62,6 +65,7 @@ final class AppEnvironment {
             secureStore: secureStore,
             wellnessProfile: SecureWellnessProfileStore(secureStore: secureStore),
             notifications: LocalNotificationScheduler(),
+            assistant: AssistantGateway(),
             regionTheme: RegionThemeStore()
         )
     }
@@ -79,6 +83,7 @@ final class AppEnvironment {
             secureStore: InMemorySecureStore(),
             wellnessProfile: MockWellnessProfileStore(),
             notifications: MockNotificationScheduler(),
+            assistant: MockWarifAssistant(),
             regionTheme: RegionThemeStore()
         )
     }

@@ -29,6 +29,12 @@
   <!-- Coarse, one-shot location only, used to suggest the Saudi region. -->
   <key>NSLocationWhenInUseUsageDescription</key>
   <string>يستخدم وريف موقعك التقريبي مرة واحدة لاقتراح منطقتك وتطبيق الثيم المناسب. لا نحفظ إحداثياتك أو سجل تحركاتك.</string>
+  <key>NSMicrophoneUsageDescription</key>
+  <string>يستخدم وريف الميكروفون عند اختيارك التحدث مع مساعد وريف.</string>
+  <key>NSSpeechRecognitionUsageDescription</key>
+  <string>يحوّل وريف كلامك إلى نص عند اختيارك استخدام المساعد الصوتي.</string>
+  <key>WARIF_AI_GATEWAY_URL</key>
+  <string>$(WARIF_AI_GATEWAY_URL)</string>
 
   <!-- Read-only Health access, requested only from Connected Health. -->
   <key>NSHealthShareUsageDescription</key>

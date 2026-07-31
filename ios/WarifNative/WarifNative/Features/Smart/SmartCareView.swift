@@ -22,6 +22,7 @@ struct SmartCareView: View {
                 } else if let insight, let phase {
                     statusCard(insight: insight, phase: phase)
                     focusCard(insight: insight)
+                    assistantEntry
                     planCard(insight: insight)
                     transparencyCard(insight: insight)
                     safetyNote
@@ -108,6 +109,28 @@ struct SmartCareView: View {
                 }
             }
         }
+    }
+
+    private var assistantEntry: some View {
+        NavigationLink {
+            WarifAssistantView()
+        } label: {
+            HStack(spacing: 12) {
+                Image(systemName: "waveform.circle.fill")
+                    .font(.title2)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("تحدثي مع مساعد وريف")
+                        .font(.headline)
+                    Text("اسألي بصوتك أو بالكتابة")
+                        .font(.footnote)
+                }
+                Spacer()
+                Image(systemName: "chevron.left")
+                    .font(.footnote.weight(.semibold))
+            }
+            .foregroundStyle(.white)
+        }
+        .warifPrimaryButton()
     }
 
     private func transparencyCard(insight: DailyInsight) -> some View {
