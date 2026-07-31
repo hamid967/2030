@@ -3,6 +3,28 @@
     "version": ">= 16.0.0",
     "appVersionSource": "remote"
   },
-  "build": {},
-  "submit": {}
+  "build": {
+    "development-simulator": {
+      "distribution": "internal",
+      "ios": {
+        "simulator": true,
+        "resourceClass": "medium"
+      }
+    },
+    "preview": {
+      "distribution": "internal",
+      "ios": {
+        "simulator": true,
+        "resourceClass": "medium"
+      }
+    },
+    "production": {
+      "ios": {
+        "resourceClass": "medium"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
 }
