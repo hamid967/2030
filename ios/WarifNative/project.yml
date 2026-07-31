@@ -83,4 +83,13 @@ schemes:
       config: Debug
       targets:
         - WarifNativeTests
-        - WarifNativeUITests
+
+  WarifNativeCI:
+    build:
+      targets:
+        WarifNative: all
+        WarifNativeTests: [test]
+    test:
+      config: Debug
+      targets:
+        - WarifNativeTests
