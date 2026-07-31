@@ -9,7 +9,6 @@ workflows:
       vars:
         IOS_DIR: ios/WarifNative
         XCODE_SCHEME: WarifNative
-        SIMULATOR_DESTINATION: platform=iOS Simulator,name=iPhone 16 Pro
     triggering:
       events:
         - push
@@ -25,12 +24,14 @@ workflows:
     scripts:
       - name: Install XcodeGen
         script: |
+          set -euo pipefail
           if ! command -v xcodegen >/dev/null 2>&1; then
             brew install xcodegen
           fi
 
       - name: Generate Warif Native project
         script: |
+          set -euo pipefail
           cd "$CM_BUILD_DIR/$IOS_DIR"
           if [ ! -f Configuration/Secrets.xcconfig ]; then
             cp Configuration/Secrets.example.xcconfig Configuration/Secrets.xcconfig
@@ -39,32 +40,77 @@ workflows:
 
       - name: Install CocoaPods workspace
         script: |
+          set -euo pipefail
           cd "$CM_BUILD_DIR/$IOS_DIR"
           pod install --repo-update
 
-      - name: Run iOS tests
+      - name: Select available iOS simulator
         script: |
+          set -euo pipefail
+          xcodebuild -version | tee "$CM_BUILD_DIR/xcode-version.log"
+          xcrun simctl list devices available | tee "$CM_BUILD_DIR/simulators.log"
+
+          IOS_SIMULATOR_UDID=$(
+            xcrun simctl list devices available \
+              | awk -F '[()]' '/iPhone 16 Pro|iPhone 16|iPhone 15 Pro|iPhone 15|iPhone 14/ && /Booted|Shutdown/ { print $2; exit }'
+          )
+
+          if [ -z "$IOS_SIMULATOR_UDID" ]; then
+            IOS_SIMULATOR_UDID=$(
+              xcrun simctl list devices available \
+                | awk -F '[()]' '/iPhone/ && /Booted|Shutdown/ { print $2; exit }'
+            )
+          fi
+
+          if [ -z "$IOS_SIMULATOR_UDID" ]; then
+            echo "No available iPhone simulator found on this Codemagic machine." >&2
+            exit 1
+          fi
+
+          echo "IOS_DESTINATION=id=$IOS_SIMULATOR_UDID" >> "$CM_ENV"
+          echo "Selected iOS simulator: $IOS_SIMULATOR_UDID"
+
+      - name: Run iOS unit tests
+        script: |
+          set -euo pipefail
           cd "$CM_BUILD_DIR/$IOS_DIR"
+          xcodebuild \
+            -workspace WarifNative.xcworkspace \
+            -scheme "$XCODE_SCHEME" \
+            -showdestinations \
+            | tee "$CM_BUILD_DIR/xcodebuild-destinations.log"
+
           set -o pipefail
           xcodebuild test \
             -workspace WarifNative.xcworkspace \
             -scheme "$XCODE_SCHEME" \
-            -destination "$SIMULATOR_DESTINATION" \
+            -sdk iphonesimulator \
+            -destination "$IOS_DESTINATION" \
+            -derivedDataPath "$CM_BUILD_DIR/DerivedData" \
+            -resultBundlePath "$CM_BUILD_DIR/WarifNativeTests.xcresult" \
+            -only-testing:WarifNativeTests \
+            -skip-testing:WarifNativeUITests \
             CODE_SIGNING_ALLOWED=NO \
             | tee "$CM_BUILD_DIR/xcodebuild-test.log"
 
       - name: Build simulator app
         script: |
+          set -euo pipefail
           cd "$CM_BUILD_DIR/$IOS_DIR"
           set -o pipefail
           xcodebuild build \
             -workspace WarifNative.xcworkspace \
             -scheme "$XCODE_SCHEME" \
-            -destination "$SIMULATOR_DESTINATION" \
+            -sdk iphonesimulator \
+            -destination "$IOS_DESTINATION" \
+            -derivedDataPath "$CM_BUILD_DIR/DerivedData" \
             CODE_SIGNING_ALLOWED=NO \
             | tee "$CM_BUILD_DIR/xcodebuild-build.log"
     artifacts:
+      - xcode-version.log
+      - simulators.log
+      - xcodebuild-destinations.log
       - xcodebuild-test.log
       - xcodebuild-build.log
-      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.app
-      - $HOME/Library/Developer/Xcode/DerivedData/**/Logs/Test/*.xcresult
+      - WarifNativeTests.xcresult
+      - DerivedData/**/Build/**/*.app
