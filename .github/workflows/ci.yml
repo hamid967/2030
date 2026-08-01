@@ -15,7 +15,24 @@ jobs:
         with:
           node-version: 24
           cache: npm
-      - run: npm ci
+
+      - name: Debug repo state
+        run: |
+          echo "Working directory: $(pwd)"
+          echo "Listing repo root:"
+          ls -la
+          echo "package.json present:" && [ -f package.json ] && echo yes || echo no
+          echo "package-lock.json present:" && [ -f package-lock.json ] && echo yes || echo no
+          echo "Node and npm versions:" && node -v && npm -v
+
+      - name: Install dependencies (prefer lockfile)
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install --no-audit --no-fund
+          fi
+
       - run: npm run lint
       - run: npm run typecheck
       - run: npm test
